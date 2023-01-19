@@ -16,11 +16,15 @@ sequenceDiagram
         server-->>browser: HTML document  STATUS 200
     deactivate server
 
+    Note right of browser: Browser processes HTML document and loads main css defined in head link tag
+
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
         Note right of server: Load CSS style sheet
         server-->>browser: CSS style file  STATUS 200
     deactivate server
+
+    Note right of browser: Browser processes HTML document and loads main.js defined in head script tag
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
     activate server
@@ -28,12 +32,11 @@ sequenceDiagram
         server-->>browser: Java Script file  STATUS 200
     deactivate server
 
-    
     Note right of browser: Browser starts to process Java Script file and executes XMLHttpRequest to load notes
 
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-
-    browser->>server: https://studies.cs.helsinki.fi/exampleapp/data.json
+    Note right of browser: Browser renders HTML document
+    
     activate server
         Note right of server: Load notes from DB
         server-->>browser: application/json Notes  STATUS 200 OK
