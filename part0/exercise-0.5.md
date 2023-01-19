@@ -35,6 +35,7 @@ sequenceDiagram
 
     browser->>server: https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
+        Note right of browser: Browser renders HTML document without data
         Note right of server: Load notes from DB
         server-->>browser: application/json Notes  STATUS 200
     deactivate server
