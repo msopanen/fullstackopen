@@ -13,19 +13,19 @@ sequenceDiagram
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
         Note right of server: Load html document
-        server-->>browser: HTML document  STATUS 304
+        server-->>browser: HTML document  STATUS 200
     deactivate server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
-        Note right of server: Load CSS style file
-        server-->>browser: CSS style file  STATUS 304
+        Note right of server: Load CSS style sheet
+        server-->>browser: CSS style file  STATUS 200
     deactivate server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
     activate server
         Note right of server: Load Java Script file
-        server-->>browser: Java Script file  STATUS 304
+        server-->>browser: Java Script file  STATUS 200
     deactivate server
 
     
