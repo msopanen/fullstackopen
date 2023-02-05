@@ -1,6 +1,8 @@
 const Total = (props) => {
-  const { parts } = props;
-  const count = parts[0].exercises + parts[1].exercises + parts[2].exercises;
+  const count =
+    props.parts[0].exercises +
+    props.parts[1].exercises +
+    props.parts[2].exercises;
 
   return <p>Number of exercises {count}</p>;
 };
