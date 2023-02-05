@@ -1,6 +1,6 @@
 const Part = (props) => {
-    const { part, exercises } = props;
-    return <p>{part} {exercises}</p>
+    const { name, exercises } = props;
+    return <p>{name} {exercises}</p>
 }
 
 export default Part;
