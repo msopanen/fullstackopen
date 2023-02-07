@@ -8,17 +8,23 @@ const Statistics = (props) => {
   return (
     <>
       <h1>statistics</h1>
-      good: {good}
-      <br />
-      neutral: {neutral}
-      <br />
-      bad: {bad}
-      <br />
-      all: {sum}
-      <br />
-      average: {average}
-      <br />
-      positive: {postive}%
+      {sum > 0 ? (
+        <>
+          good: {good}
+          <br />
+          neutral: {neutral}
+          <br />
+          bad: {bad}
+          <br />
+          all: {sum}
+          <br />
+          average: {average}
+          <br />
+          positive: {postive}%
+        </>
+      ) : (
+        <div>no feedback given</div>
+      )}
     </>
   );
 };
