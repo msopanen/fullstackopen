@@ -11,14 +11,14 @@ const Statistics = (props) => {
     <>
       <h1>statistics</h1>
       {sum > 0 ? (
-        <>
+        <table>
           <StatisticsLine text={`good ${good}`} />
           <StatisticsLine text={`neutral ${neutral}`} />
           <StatisticsLine text={`bad ${bad}`} />
           <StatisticsLine text={`all ${sum}`} />
           <StatisticsLine text={`average ${average}`} />
           <StatisticsLine text={`postitive ${postive} %`} />
-        </>
+        </table>
       ) : (
         <div>no feedback given</div>
       )}
