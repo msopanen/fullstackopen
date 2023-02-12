@@ -2,10 +2,6 @@ import { useState } from "react";
 
 import Button from "./Button";
 
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
-};
-
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -19,15 +15,35 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
   const handleNextAnecdote = () => {
-    const randomAnecdoteIdx = getRandomInt(anecdotes.length);
+    const getRandomIdx = (max) => {
+      return Math.floor(Math.random() * max);
+    };
+
+    const randomAnecdoteIdx = getRandomIdx(anecdotes.length);
     setSelected(randomAnecdoteIdx);
   };
 
+  const handleVote = () => {
+    // Clean way using map that increments matching index
+    // count and returns new array without mutating existing votes.
+    const getIncermentedVotes = ({ votes, selected }) => {
+      return votes.map((count, i) => (i === selected ? count + 1 : count));
+    };
+
+    setVotes(getIncermentedVotes({ votes, selected }));
+  };
+
+  const selectedAnecdote = anecdotes[selected];
+  const selectedVotes = votes[selected];
+
   return (
     <>
-      <div>{anecdotes[selected]}</div>
+      <div>{selectedAnecdote}</div>
+      <div>has {selectedVotes} votes</div>
+      <Button text="Vote" onClick={() => handleVote()} />
       <Button text="Next anecdote" onClick={() => handleNextAnecdote()} />
     </>
   );
