@@ -1,6 +1,8 @@
 import { useState } from "react";
 
+import Header from "./Header";
 import Button from "./Button";
+import Anecdote from "./Anecdote";
 
 const App = () => {
   const anecdotes = [
@@ -14,7 +16,7 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
-  const [selected, setSelected] = useState(0);
+  const [selecteIdx, setSelectedIdx] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
   const handleNextAnecdote = () => {
@@ -23,28 +25,45 @@ const App = () => {
     };
 
     const randomAnecdoteIdx = getRandomIdx(anecdotes.length);
-    setSelected(randomAnecdoteIdx);
+    setSelectedIdx(randomAnecdoteIdx);
   };
 
   const handleVote = () => {
-    // Clean way using map that increments matching index
-    // count and returns new array without mutating existing votes.
-    const getIncermentedVotes = ({ votes, selected }) => {
-      return votes.map((count, i) => (i === selected ? count + 1 : count));
+    const getIncermentedVotes = ({ votes, selectedIdx }) => {
+      // Example of clean way using map function that increments matching ndex
+      // count and returns new array without mutating existing votes.
+      // return votes.map((count, i) => (i === selectedIdx ? count + 1 : count));
+
+      // Take copy of the original votes array and mutate only copied array.
+      // In React it is strictly forbidden to mutate state obects so copy from
+      // original state is taken before array item is incremented.
+      const newVotes = [...votes];
+      newVotes[selecteIdx] += 1;
+      return newVotes;
     };
 
-    setVotes(getIncermentedVotes({ votes, selected }));
+    setVotes(getIncermentedVotes({ votes, selecteIdx }));
   };
 
-  const selectedAnecdote = anecdotes[selected];
-  const selectedVotes = votes[selected];
+  const getMostVotedCount = (votes) => {
+    // Sort votes array to desceding order and return item
+    // at the first index to find most votes.
+    // NOTE: Array.sort changes original array sort and thus
+    // we need to create new temporay array
+    return [...votes].sort((a, b) => b - a).at(0);
+  };
+
+  const mostVotedCount = getMostVotedCount(votes);
+  const mostVotedIdx = votes.indexOf(mostVotedCount);
 
   return (
     <>
-      <div>{selectedAnecdote}</div>
-      <div>has {selectedVotes} votes</div>
+      <Header heading="Anecdote of the day" />
+      <Anecdote anecdote={anecdotes[selecteIdx]} votes={votes[selecteIdx]} />
       <Button text="Vote" onClick={() => handleVote()} />
       <Button text="Next anecdote" onClick={() => handleNextAnecdote()} />
+      <Header heading="Anecdote with most votes" />
+      <Anecdote anecdote={anecdotes[mostVotedIdx]} votes={mostVotedCount} />
     </>
   );
 };
