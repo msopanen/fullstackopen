@@ -45,7 +45,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <div>
-        filter show with{" "}
+        filter show with
         <input value={filter} onChange={handleFilterInputChange} />
       </div>
       <h2>add a new</h2>
