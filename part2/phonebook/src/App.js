@@ -3,16 +3,16 @@ import { useState } from "react";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
-  const isUniqueEntry = ({ newPerson, persons }) => {
-    const newPersonStr = JSON.stringify(newPerson);
-    return persons.every((p) => JSON.stringify(p) !== newPersonStr);
+  const isUniquePerson = ({ newPerson, persons }) => {
+    return persons.every((p) => p.name !== newPerson.name);
   };
   const handleAddRecord = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName };
+    const newPerson = { name: newName, number: newNumber };
 
-    if (isUniqueEntry({ newPerson, persons })) {
+    if (isUniquePerson({ newPerson, persons })) {
       //setPersons(persons.concat([newPerson]));
       setPersons([...persons, newPerson]);
     } else {
@@ -20,8 +20,12 @@ const App = () => {
     }
   };
 
-  const handleInputChange = (event) => {
+  const handleNameInputChange = (event) => {
     setNewName(event.target.value);
+  };
+
+  const handleNumberInputChange = (event) => {
+    setNewNumber(event.target.value);
   };
 
   return (
@@ -29,7 +33,10 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={handleAddRecord}>
         <div>
-          name: <input value={newName} onChange={handleInputChange} />
+          name: <input value={newName} onChange={handleNameInputChange} />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberInputChange} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -37,8 +44,10 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map(({ name }) => (
-          <div key={name}>{name}</div>
+        {persons.map(({ name, number }) => (
+          <div key={name}>
+            {name} {number}
+          </div>
         ))}
       </div>
     </div>
