@@ -1,14 +1,23 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
 
+  const isUniqueEntry = ({ newPerson, persons }) => {
+    const newPersonStr = JSON.stringify(newPerson);
+    return persons.every((p) => JSON.stringify(p) !== newPersonStr);
+  };
   const handleAddRecord = (event) => {
     event.preventDefault();
     const newPerson = { name: newName };
-    //setPersons(persons.concat([newPerson]));
-    setPersons([...persons, newPerson]);
+
+    if (isUniqueEntry({ newPerson, persons })) {
+      //setPersons(persons.concat([newPerson]));
+      setPersons([...persons, newPerson]);
+    } else {
+      alert(`${newPerson.name} is already added to phonebook`);
+    }
   };
 
   const handleInputChange = (event) => {
