@@ -11,7 +11,8 @@ const Part = ({ part }) => (
   </p>
 );
 
-const Content = ({ parts }) => parts.map((part) => <Part part={part} />);
+const Content = ({ parts }) =>
+  parts.map((part) => <Part key={part.id} part={part} />);
 
 const Course = ({ course }) => {
   return (
@@ -68,7 +69,7 @@ const App = () => {
     },
   ];
 
-  return courses.map((course) => <Course course={course} />);
+  return courses.map((course) => <Course key={course.id} course={course} />);
 };
 
 export default App;
