@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Filter from "./Filter";
-import UserForm from "./UserForm";
-import Persons from "./Persons";
+import Filter from "./components/Filter";
+import UserForm from "./components/UserForm";
+import Persons from "./components/Persons";
 
 const isUniquePerson = ({ newPerson, persons }) => {
   return persons.every((p) => p.name !== newPerson.name);
