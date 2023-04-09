@@ -3,7 +3,8 @@ import Filter from "./components/Filter";
 import UserForm from "./components/UserForm";
 import Persons from "./components/Persons";
 
-import { createPerson, getAllPersons } from "./services/persons";
+import { createPerson, deletePerson, getAllPersons } from "./services/persons";
+
 const isUniquePerson = ({ newPerson, persons }) => {
   return persons.every((p) => p.name !== newPerson.name);
 };
@@ -12,6 +13,11 @@ const nameIncludes =
   (filter) =>
   ({ name }) =>
     name.toLowerCase().includes(filter.toLowerCase());
+
+const excludeName =
+  (excludedName) =>
+  ({ name }) =>
+    name !== excludedName;
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -35,6 +41,15 @@ const App = () => {
       });
     } else {
       alert(`${newPerson.name} is already added to phonebook`);
+    }
+  };
+
+  const handleDeleteUser = ({ name, id }) => {
+    if (window.confirm(`Delete ${name} ?`)) {
+      deletePerson(id).then(() => {
+        const leftPersons = persons.filter(excludeName(name));
+        setPersons(leftPersons);
+      });
     }
   };
 
@@ -65,7 +80,7 @@ const App = () => {
         onNumberInput={handleNumberInput}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onDelete={handleDeleteUser} />
     </div>
   );
 };
