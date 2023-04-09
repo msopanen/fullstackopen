@@ -30,7 +30,11 @@ const App = () => {
     const newPerson = { name: newName, number: newNumber };
 
     if (isUniquePerson({ newPerson, persons })) {
-      setPersons([...persons, newPerson]);
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then((response) => {
+          setPersons([...persons, response.data]);
+        });
     } else {
       alert(`${newPerson.name} is already added to phonebook`);
     }
