@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import UserForm from "./components/UserForm";
 import Persons from "./components/Persons";
 
+import { createPerson, getAllPersons } from "./services/persons";
 const isUniquePerson = ({ newPerson, persons }) => {
   return persons.every((p) => p.name !== newPerson.name);
 };
@@ -20,8 +20,8 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    getAllPersons().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -30,11 +30,9 @@ const App = () => {
     const newPerson = { name: newName, number: newNumber };
 
     if (isUniquePerson({ newPerson, persons })) {
-      axios
-        .post("http://localhost:3001/persons", newPerson)
-        .then((response) => {
-          setPersons([...persons, response.data]);
-        });
+      createPerson(newPerson).then((createdPerson) => {
+        setPersons([...persons, createdPerson]);
+      });
     } else {
       alert(`${newPerson.name} is already added to phonebook`);
     }
