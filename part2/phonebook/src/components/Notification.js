@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 
-export const DEFAULT_NOTIFICATION = { id: 0, message: null };
-
-const notificationStyle = {
-  color: "green",
-  backgroundColor: "lightgrey",
-  borderStyle: "solid",
-  borderColor: "green",
-  borderRadius: ".5rem",
-  fontSize: "1.25rem",
-  padding: "1rem",
-  marginBottom: "1rem",
-};
+export const DEFAULT_NOTIFICATION = { id: 0, message: null, error: false };
 
 const Notification = ({ notification }) => {
-  const { id, message } = notification;
+  const { id, message, error } = notification;
+
+  const notificationStyle = {
+    color: error ? "red" : "green",
+    backgroundColor: "lightgrey",
+    borderStyle: "solid",
+    borderColor: error ? "red" : "green",
+    borderRadius: ".5rem",
+    fontSize: "1.25rem",
+    padding: "1rem",
+    marginBottom: "1rem",
+  };
 
   const [show, setShow] = useState(false);
 
@@ -23,7 +23,7 @@ const Notification = ({ notification }) => {
   }, [id, message]);
 
   useEffect(() => {
-    const delay = setTimeout(() => setShow(false), 1000);
+    const delay = setTimeout(() => setShow(false), 5000);
     return () => clearTimeout(delay);
   });
 

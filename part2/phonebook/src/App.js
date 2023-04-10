@@ -30,9 +30,25 @@ const excludeName =
     name !== excludedName;
 
 const createNotification = (message, notification) => ({
+  ...notification,
   id: notification.id + 1,
   message,
 });
+
+const createErrorNotification = (errorMessage, notification, error) => {
+  const { response, code } = error;
+  let message = "";
+
+  if (code === "ERR_NETWORK") {
+    message = `${errorMessage}, because cannot not connect to server. Please check your network connection and try again later.`;
+  } else if (response.status === 404) {
+    message = `${errorMessage}, user information not found. Please check that the user exists and try again later.`;
+  } else {
+    message = `${errorMessage}, please try again later.`;
+  }
+
+  return { ...notification, id: notification.id + 1, message, error: true };
+};
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -54,34 +70,69 @@ const App = () => {
 
     if (oldPerson && confirmOperation(oldPerson.name)) {
       const changedPerson = { ...oldPerson, number: newNumber };
-      updatePerson(changedPerson).then((updatedPerson) => {
-        setPersons(
-          persons.map((p) => (p.id === updatedPerson.id ? updatedPerson : p))
-        );
-        setNotification(
-          createNotification(`User ${newName} updated`, notification)
-        );
-      });
+
+      updatePerson(changedPerson)
+        .then((updatedPerson) => {
+          setPersons(
+            persons.map((p) => (p.id === updatedPerson.id ? updatedPerson : p))
+          );
+
+          const updateNtf = createNotification(
+            `User ${newName} updated`,
+            notification
+          );
+          setNotification(updateNtf);
+        })
+        .catch((error) => {
+          const errorNtf = createErrorNotification(
+            `Could not update user ${newName}`,
+            notification,
+            error
+          );
+          setNotification(errorNtf);
+        });
     } else {
       const newPerson = { name: newName, number: newNumber };
-      createPerson(newPerson).then((createdPerson) => {
-        setPersons([...persons, createdPerson]);
-        setNotification(
-          createNotification(`User ${newName} added`, notification)
-        );
-      });
+
+      createPerson(newPerson)
+        .then((createdPerson) => {
+          setPersons([...persons, createdPerson]);
+
+          const createNtf = createNotification(
+            `User ${newName} added`,
+            notification
+          );
+          setNotification(createNtf);
+        })
+        .catch((error) => {
+          const errorNtf = createErrorNotification(
+            `Could not add user ${newName}`,
+            notification,
+            error
+          );
+          setNotification(errorNtf);
+        });
     }
   };
 
   const handleDeleteUser = ({ name, id }) => {
     if (window.confirm(`Delete ${name} ?`)) {
-      deletePerson(id).then(() => {
-        const leftPersons = persons.filter(excludeName(name));
-        setPersons(leftPersons);
-        setNotification(
-          createNotification(`User ${name} deleted`, notification)
-        );
-      });
+      deletePerson(id)
+        .then(() => {
+          const leftPersons = persons.filter(excludeName(name));
+          setPersons(leftPersons);
+          setNotification(
+            createNotification(`User ${name} deleted`, notification)
+          );
+        })
+        .catch((error) => {
+          const errorNtf = createErrorNotification(
+            `Could not delete user ${name}`,
+            notification,
+            error
+          );
+          setNotification(errorNtf);
+        });
     }
   };
 
