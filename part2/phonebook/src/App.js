@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import UserForm from "./components/UserForm";
 import Persons from "./components/Persons";
+import Notification, { DEFAULT_NOTIFICATION } from "./components/Notification";
 
 import {
   createPerson,
@@ -28,11 +29,17 @@ const excludeName =
   ({ name }) =>
     name !== excludedName;
 
+const createNotification = (message, notification) => ({
+  id: notification.id + 1,
+  message,
+});
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notification, setNotification] = useState(DEFAULT_NOTIFICATION);
 
   useEffect(() => {
     getAllPersons().then((initialPersons) => {
@@ -47,15 +54,21 @@ const App = () => {
 
     if (oldPerson && confirmOperation(oldPerson.name)) {
       const changedPerson = { ...oldPerson, number: newNumber };
-      updatePerson(changedPerson).then((updatedPerson) =>
+      updatePerson(changedPerson).then((updatedPerson) => {
         setPersons(
           persons.map((p) => (p.id === updatedPerson.id ? updatedPerson : p))
-        )
-      );
+        );
+        setNotification(
+          createNotification(`User ${newName} updated`, notification)
+        );
+      });
     } else {
       const newPerson = { name: newName, number: newNumber };
       createPerson(newPerson).then((createdPerson) => {
         setPersons([...persons, createdPerson]);
+        setNotification(
+          createNotification(`User ${newName} added`, notification)
+        );
       });
     }
   };
@@ -65,6 +78,9 @@ const App = () => {
       deletePerson(id).then(() => {
         const leftPersons = persons.filter(excludeName(name));
         setPersons(leftPersons);
+        setNotification(
+          createNotification(`User ${name} deleted`, notification)
+        );
       });
     }
   };
@@ -86,6 +102,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification} />
       <Filter filter={filter} onFilterInputChange={handleFilterChange} />
       <h2>add a new</h2>
       <UserForm
