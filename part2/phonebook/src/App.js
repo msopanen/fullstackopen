@@ -3,11 +3,20 @@ import Filter from "./components/Filter";
 import UserForm from "./components/UserForm";
 import Persons from "./components/Persons";
 
-import { createPerson, deletePerson, getAllPersons } from "./services/persons";
+import {
+  createPerson,
+  deletePerson,
+  getAllPersons,
+  updatePerson,
+} from "./services/persons";
 
-const isUniquePerson = ({ newPerson, persons }) => {
-  return persons.every((p) => p.name !== newPerson.name);
-};
+const findByName = ({ name, persons }) =>
+  persons.find((p) => p.name.toLowerCase() === name.toLocaleLowerCase());
+
+const confirmOperation = (name) =>
+  window.confirm(
+    `${name} is already added to phonebook, replace the old number with a new one?`
+  );
 
 const nameIncludes =
   (filter) =>
@@ -33,14 +42,21 @@ const App = () => {
 
   const handleAddUser = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName, number: newNumber };
 
-    if (isUniquePerson({ newPerson, persons })) {
+    const oldPerson = findByName({ name: newName, persons });
+
+    if (oldPerson && confirmOperation(oldPerson.name)) {
+      const changedPerson = { ...oldPerson, number: newNumber };
+      updatePerson(changedPerson).then((updatedPerson) =>
+        setPersons(
+          persons.map((p) => (p.id === updatedPerson.id ? updatedPerson : p))
+        )
+      );
+    } else {
+      const newPerson = { name: newName, number: newNumber };
       createPerson(newPerson).then((createdPerson) => {
         setPersons([...persons, createdPerson]);
       });
-    } else {
-      alert(`${newPerson.name} is already added to phonebook`);
     }
   };
 
