@@ -2,7 +2,21 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import UserForm from "./components/UserForm";
 import Persons from "./components/Persons";
-import Notification, { DEFAULT_NOTIFICATION } from "./components/Notification";
+import Notification from "./components/Notification";
+
+import {
+  createNotification,
+  createErrorNotification,
+  DEFAULT_NOTIFICATION,
+} from "./components/notification.utils";
+
+import {
+  confirmOperation,
+  excludeName,
+  findByName,
+  getUpdatedPersons,
+  nameIncludes,
+} from "./app.utils";
 
 import {
   createPerson,
@@ -10,45 +24,6 @@ import {
   getAllPersons,
   updatePerson,
 } from "./services/persons";
-
-const findByName = ({ name, persons }) =>
-  persons.find((p) => p.name.toLowerCase() === name.toLocaleLowerCase());
-
-const confirmOperation = (name) =>
-  window.confirm(
-    `${name} is already added to phonebook, replace the old number with a new one?`
-  );
-
-const nameIncludes =
-  (filter) =>
-  ({ name }) =>
-    name.toLowerCase().includes(filter.toLowerCase());
-
-const excludeName =
-  (excludedName) =>
-  ({ name }) =>
-    name !== excludedName;
-
-const createNotification = (message, notification) => ({
-  ...notification,
-  id: notification.id + 1,
-  message,
-});
-
-const createErrorNotification = (errorMessage, notification, error) => {
-  const { response, code } = error;
-  let message = "";
-
-  if (code === "ERR_NETWORK") {
-    message = `${errorMessage}, because cannot not connect to server. Please check your network connection and try again later.`;
-  } else if (response.status === 404) {
-    message = `${errorMessage}, user information not found. Please check that the user exists and try again later.`;
-  } else {
-    message = `${errorMessage}, please try again later.`;
-  }
-
-  return { ...notification, id: notification.id + 1, message, error: true };
-};
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -73,9 +48,7 @@ const App = () => {
 
       updatePerson(changedPerson)
         .then((updatedPerson) => {
-          setPersons(
-            persons.map((p) => (p.id === updatedPerson.id ? updatedPerson : p))
-          );
+          setPersons(getUpdatedPersons(updatedPerson, persons));
 
           const updateNtf = createNotification(
             `User ${newName} updated`,
@@ -116,7 +89,7 @@ const App = () => {
   };
 
   const handleDeleteUser = ({ name, id }) => {
-    if (window.confirm(`Delete ${name} ?`)) {
+    if (confirmOperation(`Delete ${name} ?`)) {
       deletePerson(id)
         .then(() => {
           const leftPersons = persons.filter(excludeName(name));
@@ -148,8 +121,6 @@ const App = () => {
     setFilter(event.target.value);
   };
 
-  const filteredPersons = persons.filter(nameIncludes(filter));
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -164,7 +135,10 @@ const App = () => {
         onNumberInput={handleNumberInput}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} onDelete={handleDeleteUser} />
+      <Persons
+        persons={persons.filter(nameIncludes(filter))}
+        onDelete={handleDeleteUser}
+      />
     </div>
   );
 };
