@@ -35,7 +35,6 @@ const Flag = ({ country }) => {
 const CountryDetails = ({ countries }) => {
   if (countries.length === 1) {
     const country = countries.pop();
-    console.log({ country });
     return (
       <>
         <Header country={country} />
