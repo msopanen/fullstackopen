@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseUrl = "https://restcountries.com/v3.1/";
-const fields = "area,capital,flags,languages,name";
+const fields = "area,capital,cca2,flags,languages,name";
 
 // Normalize restcountries data to convenient model here
 const getNormalizedReducedCountries = ({ data }) => {
@@ -10,6 +10,7 @@ const getNormalizedReducedCountries = ({ data }) => {
     capital: country.capital,
     flag: country.flags.svg,
     name: country.name.common,
+    cc: country.cca2,
     languages: country.languages,
   }));
 };

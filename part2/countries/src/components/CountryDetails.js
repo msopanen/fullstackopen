@@ -1,3 +1,4 @@
+import CountryWeather from "./CountryWeather";
 const Header = ({ country }) => <h1>{country.name}</h1>;
 
 const Area = ({ country }) => <p>{`area: ${country.area}`}</p>;
@@ -34,7 +35,8 @@ const Flag = ({ country }) => {
 
 const CountryDetails = ({ countries }) => {
   if (countries.length === 1) {
-    const country = countries.pop();
+    const country = countries[0];
+
     return (
       <>
         <Header country={country} />
@@ -42,6 +44,7 @@ const CountryDetails = ({ countries }) => {
         <Area country={country} />
         <Languages country={country} />
         <Flag country={country} />
+        <CountryWeather country={country} />
       </>
     );
   }
