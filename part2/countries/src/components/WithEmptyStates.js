@@ -3,8 +3,8 @@ const TooManyMatches = () => (
 );
 const NoMatches = () => <div>No matches, reduce filter</div>;
 
-const Countries = ({ count, children }) => {
+const WithEmptyStates = ({ count, children }) => {
   return count < 1 ? <NoMatches /> : count > 10 ? <TooManyMatches /> : children;
 };
 
-export default Countries;
+export default WithEmptyStates;

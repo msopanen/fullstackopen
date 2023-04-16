@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAll } from "./services/restcountries";
 
 import CountriesFilter from "./components/CountriesFilter";
-import Countries from "./components/Countries";
+import WithEmptyStates from "./components/WithEmptyStates";
 import CountriesList from "./components/CountriesList";
 import CountryDetails from "./components/CountryDetails";
 import WithNotification from "./components/WithNotification";
@@ -31,10 +31,10 @@ const App = () => {
         countryFilter={countryFilter}
         onFilterInputChange={setCountryFilter}
       />
-      <Countries count={countries.length}>
+      <WithEmptyStates count={countries.length}>
         <CountriesList countries={countries} />
         <CountryDetails countries={countries} />
-      </Countries>
+      </WithEmptyStates>
     </WithNotification>
   );
 };
