@@ -9,6 +9,6 @@ Course info exercises
 
 To launch application run :
 - npm install
-- npm start
+- REACT_APP_API_KEY=<api-key> npm start
 
 Go to address http://localhost:3000
