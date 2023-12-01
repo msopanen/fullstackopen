@@ -11,7 +11,8 @@ import {
 } from "./components/notification.utils";
 
 import {
-  confirmOperation,
+  confirmDeleteOperation,
+  confirmUpdateOperation,
   excludeName,
   findByName,
   getUpdatedPersons,
@@ -43,9 +44,8 @@ const App = () => {
 
     const oldPerson = findByName({ name: newName, persons });
 
-    if (oldPerson && confirmOperation(oldPerson.name)) {
+    if (oldPerson && confirmUpdateOperation(oldPerson.name)) {
       const changedPerson = { ...oldPerson, number: newNumber };
-
       updatePerson(changedPerson)
         .then((updatedPerson) => {
           setPersons(getUpdatedPersons(updatedPerson, persons));
@@ -64,7 +64,7 @@ const App = () => {
           );
           setNotification(errorNtf);
         });
-    } else {
+    } else if (!oldPerson) {
       const newPerson = { name: newName, number: newNumber };
 
       createPerson(newPerson)
@@ -89,7 +89,7 @@ const App = () => {
   };
 
   const handleDeleteUser = ({ name, id }) => {
-    if (confirmOperation(`Delete ${name} ?`)) {
+    if (confirmDeleteOperation(name)) {
       deletePerson(id)
         .then(() => {
           const leftPersons = persons.filter(excludeName(name));
