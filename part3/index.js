@@ -53,16 +53,27 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 const generateId = () => Math.floor(Math.random() * 1000001);
+const notUnique = (name) => records.some(r => r.name === name);
 
 app.post('/api/persons', (req, res) => {
-  const body = req.body
-  console.log({ body })
-  const newRecord = {
-    id: generateId(),
-    ...body
+  const { name, number } = req.body
+  
+  if( !name ) {
+    res.status(400).json({ error: "name is missing"});
+  } else if ( !number ) {
+    res.status(400).json({ error: "number is missing"});
+  } else if( notUnique(name)) {
+    res.status(400).json({ error: "name must be unique"})
+  } 
+  else {
+    const newRecord = {
+      id: generateId(),
+      name, 
+      number
+    }
+    records = records.concat(newRecord);
+    res.json(newRecord);
   }
-  records = records.concat(newRecord);
-  res.json(newRecord);
 })
 
 const PORT = 3001
