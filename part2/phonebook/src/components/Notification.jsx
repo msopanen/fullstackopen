@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-export const DEFAULT_NOTIFICATION = { id: 0, message: null, error: false };
-
 const Notification = ({ notification }) => {
   const { id, message, error } = notification;
 
