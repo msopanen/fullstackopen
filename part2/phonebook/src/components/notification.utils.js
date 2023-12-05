@@ -4,6 +4,7 @@ export const createNotification = (message, notification) => ({
   ...notification,
   id: notification.id + 1,
   message,
+  error: false
 });
 
 export const createErrorNotification = (errorMessage, notification, error) => {

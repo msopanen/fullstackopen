@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 const Notification = ({ notification }) => {
   const { id, message, error } = notification;
-
   const notificationStyle = {
     color: error ? "red" : "green",
     backgroundColor: "lightgrey",
