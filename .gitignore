@@ -81,6 +81,8 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+# Allow part3/dist folder that is used to deploy
+!/part3/dist
 
 # Gatsby files
 .cache/
