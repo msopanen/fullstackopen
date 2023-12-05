@@ -23,6 +23,6 @@ repository with following setup.
 - Set for build command `( cd part3 ; npm install )`
 - Set for start command `( cd part3 ; npm start )`
 
-# Render API
+# Phonebook application deployed in Render
 
-https://fso-phonebook-014h.onrender.com/api
+https://fso-phonebook-014h.onrender.com
