@@ -16,7 +16,7 @@ Go to address http://localhost:3001/api/persons
 
 # Deployment to Render
 
-Backend can be deployed to the [Render](https://render.com/) using par3 
+Backend can be deployed to the [Render](https://render.com/) using part3 
 repository with following setup.
 
 - Create new Web application using git repo `https://github.com/msopanen/fullstackopen`
