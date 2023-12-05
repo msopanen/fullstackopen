@@ -80,11 +80,13 @@ app.put('/api/persons/:id', (req, res, next) => {
     number
   };
 
-  Person.findByIdAndUpdate(id, person, { new: true })
-  .then(updatedPerson => {
-    res.json(updatedPerson)
-  })
-  .catch(error => next(error))
+  Person.findByIdAndUpdate(id, person, 
+    { new: true, runValidators: true, context: 'query' }
+  )
+    .then(updatedPerson => {
+      res.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 // Unknown endpoint error handler
@@ -103,6 +105,8 @@ const errorHandler = (err, _req, res, next) => {
 
   if (name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' })
+  } else if (name === 'ValidationError') {
+    return res.status(400).json({ error: message })
   }
 
   next(err)

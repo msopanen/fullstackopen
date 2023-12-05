@@ -13,6 +13,8 @@ export const createErrorNotification = (errorMessage, notification, error) => {
 
   if (code === "ERR_NETWORK") {
     message = `${errorMessage}, because cannot not connect to server. Please check your network connection and try again later.`;
+  } else if (response.status === 400) {
+    message = `${response.data.error}`
   } else if (response.status === 404) {
     message = `${errorMessage}, user information not found. Please check that the user exists and try again later.`;
   } else {
