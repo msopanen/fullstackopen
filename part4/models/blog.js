@@ -21,7 +21,7 @@ const blogSchema = mongoose.Schema({
     type: String,
     validate: {
       validator: function (v) {
-        return /^http:\/\/|^https:\/\//.test(v)
+        return /^http:\/\/[A-Za-z0-9_]{2}|^https:\/\/[A-Za-z0-9_]{2}/.test(v)
       },
       message: p => `${p.value} is not a valid url!`
     },
