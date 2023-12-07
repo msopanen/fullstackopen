@@ -36,16 +36,11 @@ describe("blogs api", () => {
       .send(payload)
       .expect(201)
 
-    await api
-      .get("/api/blogs")
-      .expect(200)
-      .expect("Content-Type", /application\/json/)
-      .expect(({ body }) => {
-        expect(body.length).toEqual(4)
-        body.forEach(({ id }) => expect(id).toBeDefined())
-        const blog = helper.pickBlogWithoutId(body, payload.title)
-        expect(blog).toEqual(payload)
-      })
+    const blogs = await helper.blogsInDb()
+    expect(blogs.length).toEqual(4)
+    blogs.forEach(({ id }) => expect(id).toBeDefined())
+    const blog = helper.pickBlogByTitleWithoutId(blogs, payload.title)
+    expect(blog).toEqual(payload)
   })
 
   afterAll(async () => {

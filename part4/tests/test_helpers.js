@@ -1,3 +1,5 @@
+const Blog = require("../models/blog")
+
 const initialBlogs = [
   {
     "title": "Kaminan lämmitys",
@@ -19,11 +21,17 @@ const initialBlogs = [
   }
 ]
 
-const pickBlogWithoutId = (body, expectedTitle) => {
+const pickBlogByTitleWithoutId = (body, expectedTitle) => {
   // eslint-disable-next-line no-unused-vars
   const pick = ({ id, ...rest } = {}) => rest
   return pick(body.find(({ title }) =>
     title === expectedTitle))
 
 }
-module.exports = { initialBlogs, pickBlogWithoutId }
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(b => b.toJSON())
+}
+
+module.exports = { initialBlogs, pickBlogByTitleWithoutId, blogsInDb }
