@@ -1,22 +1,29 @@
 const initialBlogs = [
   {
-    "title": "Sotaromaani",
+    "title": "Kaminan lämmitys",
     "author": "Vaino Linna",
     "url": "https://xyz",
     "likes": 5
   },
   {
-    "title": "Tuntematon sotilas",
+    "title": "Perunateatteri",
     "author": "Vaino Linna",
     "url": "https://xyz",
     "likes": 4
   },
   {
-    "title": "Pet Sematary",
+    "title": "Montun kaivuu",
     "author": "Stephen King",
     "url": "https://xyz",
     "likes": 3
   }
 ]
 
-module.exports = { initialBlogs }
+const pickBlogWithoutId = (body, expectedTitle) => {
+  // eslint-disable-next-line no-unused-vars
+  const pick = ({ id, ...rest } = {}) => rest
+  return pick(body.find(({ title }) =>
+    title === expectedTitle))
+
+}
+module.exports = { initialBlogs, pickBlogWithoutId }

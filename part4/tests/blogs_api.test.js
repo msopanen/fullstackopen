@@ -23,6 +23,31 @@ describe("blogs api", () => {
       })
   })
 
+  test("new blog is added", async () => {
+    const payload = {
+      "title": "Biologinen rehunsäilöntä",
+      "author": "Artturi Iivari Virtanen",
+      "url": "https://xyz",
+      "likes": 2
+    }
+    await api
+      .post("/api/blogs")
+      .set("Content-Type", "application/json")
+      .send(payload)
+      .expect(201)
+
+    await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/)
+      .expect(({ body }) => {
+        expect(body.length).toEqual(4)
+        body.forEach(({ id }) => expect(id).toBeDefined())
+        const blog = helper.pickBlogWithoutId(body, payload.title)
+        expect(blog).toEqual(payload)
+      })
+  })
+
   afterAll(async () => {
     await mongoose.connection.close()
   })
