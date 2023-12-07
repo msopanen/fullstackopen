@@ -84,10 +84,37 @@ describe("favorite blog", () => {
 
   test("resolve favorite blog", () => {
     expect(listHelper.favoriteBlog(blogs)).toEqual({
-      "author": "Edsger W. Dijkstra",
-      "likes": 12,
-      "title": "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      likes: 12,
+      title: "Canonical string reduction",
     }
     )
+  })
+})
+
+describe("most blogs", () => {
+  test("of undefined list", () => {
+    expect(listHelper.mostBlogs(undefined)).toEqual({
+      author: undefined,
+      blogs: 0 })
+  })
+  test("which author has most blogs", () => {
+    expect(listHelper.mostBlogs(blogs)).toEqual({
+      author: "Robert C. Martin",
+      blogs: 3 })
+  })
+})
+
+describe("most likes", () => {
+  test("of undefined list", () => {
+    expect(listHelper.mostLikes(undefined)).toEqual({
+      author: undefined,
+      likes: 0 })
+  })
+  test("which author has most likes", () => {
+    expect(listHelper.mostLikes(blogs)).toEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 17
+    })
   })
 })
