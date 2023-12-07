@@ -12,13 +12,14 @@ describe("blogs api", () => {
     await Blogs.insertMany(helper.initialBlogs)
   })
 
-  test("three blogs are returned as json", async () => {
+  test("three blogs are returned as json and identified by id", async () => {
     await api
       .get("/api/blogs")
       .expect(200)
       .expect("Content-Type", /application\/json/)
-      .expect((res) => {
-        expect(res.body.length).toEqual(3)
+      .expect(({ body }) => {
+        expect(body.length).toEqual(3)
+        body.forEach(({ id }) => expect(id).toBeDefined())
       })
   })
 
