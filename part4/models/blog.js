@@ -11,7 +11,8 @@ mongoose.connect(MONGODB_URI).then(() => {
 const blogSchema = mongoose.Schema({
   title: {
     type: String,
-    minLength: 3
+    minLength: 3,
+    required: [true, "title required!"]
   },
   author: {
     type: String,
@@ -27,7 +28,10 @@ const blogSchema = mongoose.Schema({
     },
     required: [true, "url required!"]
   },
-  likes: Number
+  likes: {
+    type: Number,
+    default: 0
+  }
 })
 
 blogSchema.set("toJSON", {

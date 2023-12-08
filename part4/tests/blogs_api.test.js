@@ -12,6 +12,13 @@ describe("blogs api", () => {
     await Blogs.insertMany(helper.initialBlogs)
   })
 
+  const payload = {
+    "title": "Biologinen rehunsäilöntä",
+    "author": "Artturi Iivari Virtanen",
+    "url": "https://xyz",
+    "likes": 1
+  }
+
   test("three blogs are returned as json and identified by id", async () => {
     await api
       .get("/api/blogs")
@@ -23,13 +30,7 @@ describe("blogs api", () => {
       })
   })
 
-  test("new blog is added", async () => {
-    const payload = {
-      "title": "Biologinen rehunsäilöntä",
-      "author": "Artturi Iivari Virtanen",
-      "url": "https://xyz",
-      "likes": 2
-    }
+  test("of new blog", async () => {
     await api
       .post("/api/blogs")
       .set("Content-Type", "application/json")
@@ -41,6 +42,39 @@ describe("blogs api", () => {
     blogs.forEach(({ id }) => expect(id).toBeDefined())
     const blog = helper.pickBlogByTitleWithoutId(blogs, payload.title)
     expect(blog).toEqual(payload)
+  })
+
+  test("of new blog likes defaults to value 0", async () => {
+    const payload = {
+      "title": "Kemiallinen kasvinsuojelu",
+      "author": "Monsanto",
+      "url": "https://xyz",
+    }
+    await api
+      .post("/api/blogs")
+      .set("Content-Type", "application/json")
+      .send(payload)
+      .expect(201)
+
+    const blogs = await helper.blogsInDb()
+    expect(blogs.length).toEqual(4)
+    blogs.forEach(({ id }) => expect(id).toBeDefined())
+    const blog = helper.pickBlogByTitleWithoutId(blogs, payload.title)
+    expect(blog).toEqual({ ...payload, likes: 0 })
+  })
+
+  test.each(
+    [["title"],
+      ["url"]
+    ])("of new blog missing %s error", async (prop) => {
+    await api
+      .post("/api/blogs")
+      .set("Content-Type", "application/json")
+      .send({ ...payload, [prop]: undefined })
+      .expect(400)
+
+    const blogs = await helper.blogsInDb()
+    expect(blogs.length).toEqual(3)
   })
 
   afterAll(async () => {
