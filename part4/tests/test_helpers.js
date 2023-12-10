@@ -21,12 +21,15 @@ const initialBlogs = [
   }
 ]
 
-const pickBlogByTitleWithoutId = (body, expectedTitle) => {
+const pickBlogByTitle = (blogs, expectedTitle) => {
+  return blogs.find(({ title }) =>
+    title === expectedTitle)
+}
+
+const pickBlogByTitleWithoutId = (blogs, expectedTitle) => {
   // eslint-disable-next-line no-unused-vars
   const pick = ({ id, ...rest } = {}) => rest
-  return pick(body.find(({ title }) =>
-    title === expectedTitle))
-
+  return pick(pickBlogByTitle(blogs, expectedTitle))
 }
 
 const blogsInDb = async () => {
@@ -34,4 +37,9 @@ const blogsInDb = async () => {
   return blogs.map(b => b.toJSON())
 }
 
-module.exports = { initialBlogs, pickBlogByTitleWithoutId, blogsInDb }
+module.exports = {
+  initialBlogs,
+  pickBlogByTitle,
+  pickBlogByTitleWithoutId,
+  blogsInDb
+}
