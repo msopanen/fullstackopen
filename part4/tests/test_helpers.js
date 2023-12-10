@@ -21,6 +21,11 @@ const initialBlogs = [
   }
 ]
 
+const pickBlogById = (blogs, expectedId) => {
+  return blogs.find(({ id }) =>
+    id === expectedId)
+}
+
 const pickBlogByTitle = (blogs, expectedTitle) => {
   return blogs.find(({ title }) =>
     title === expectedTitle)
@@ -39,6 +44,7 @@ const blogsInDb = async () => {
 
 module.exports = {
   initialBlogs,
+  pickBlogById,
   pickBlogByTitle,
   pickBlogByTitleWithoutId,
   blogsInDb

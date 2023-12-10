@@ -105,6 +105,61 @@ describe("with initial blogs in DB", () => {
       const blogsAfterDel = await helper.blogsInDb()
       expect(blogsAfterDel.length).toEqual(3)
     })
+
+    test("fails for malformed id with HTTP status 400 without delete", async () => {
+      const blogs = await helper.blogsInDb()
+      expect(blogs.length).toEqual(3)
+      const invalidId = "xyz"
+      await api
+        .delete(`/api/blogs/${invalidId}`)
+        .expect(400)
+
+      const blogsAfterDel = await helper.blogsInDb()
+      expect(blogsAfterDel.length).toEqual(3)
+    })
+  })
+
+  describe("update of the blog in DB", () => {
+    test("succeeds for valid id and likes prop with HTTP status 200", async () => {
+      const blogs = await helper.blogsInDb()
+      const blogToBeUpdated = blogs.pop()
+
+      const updatedLikes = blogToBeUpdated.likes + 100
+
+      await api
+        .put(`/api/blogs/${blogToBeUpdated.id}`)
+        .set("Content-Type", "application/json")
+        .send({
+          likes: updatedLikes
+        })
+        .expect(200)
+
+      const blogsAfterUpdate = await helper.blogsInDb()
+      const updatedBlog = helper.pickBlogById(blogsAfterUpdate, blogToBeUpdated.id)
+      expect(updatedBlog.likes).toEqual(updatedLikes)
+    })
+
+    test("fails for invalid id with HTTP status 404", async () => {
+      const invalidId = "000000000000000000000000"
+      await api
+        .put(`/api/blogs/${invalidId}`)
+        .set("Content-Type", "application/json")
+        .send({
+          likes: 999
+        })
+        .expect(404)
+    })
+
+    test("fails for malformed id with HTTP status 400", async () => {
+      const invalidId = "xyz"
+      await api
+        .put(`/api/blogs/${invalidId}`)
+        .set("Content-Type", "application/json")
+        .send({
+          likes: 999
+        })
+        .expect(400)
+    })
   })
 
   afterAll(async () => {
