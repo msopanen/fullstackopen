@@ -1,15 +1,15 @@
 const mongoose = require("mongoose")
 const supertest = require("supertest")
 const app = require("../app")
-const Blogs = require("../models/blog")
+const Blog = require("../models/blog")
 const helper = require("./test_helpers")
 
 const api = supertest(app)
 
 describe("with initial blogs in DB", () => {
   beforeEach(async () => {
-    await Blogs.deleteMany({})
-    await Blogs.insertMany(helper.initialBlogs)
+    await Blog.deleteMany({})
+    await Blog.insertMany(helper.initialBlogs)
   })
 
   const payload = {
