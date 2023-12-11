@@ -6,11 +6,17 @@ const loginRouter = require("./controllers/login")
 const usersRouter = require("./controllers/users")
 const blogsRouter = require("./controllers/blogs")
 
-const { requestLogger, unknownEndpoint, errorHandler } = require("./utils/middlewares")
+const {
+  requestLogger,
+  unknownEndpoint,
+  errorHandler,
+  tokenExtractor
+} = require("./utils/middlewares")
 
 app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
+app.use(tokenExtractor)
 
 app.use("/api/login", loginRouter)
 app.use("/api/users", usersRouter)

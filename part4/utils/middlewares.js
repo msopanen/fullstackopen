@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken")
+const { SECRET } = require("../utils/config")
 const logger = require("./logger")
 
 const requestLogger = (request, _, next) => {
@@ -21,6 +23,12 @@ const errorHandler = (error, _, response, next) => {
     return response.status(400).json({ error: error.message })
   } else if (error.name === "UserPasswordValidationError") {
     return response.status(400).json({ error: error.message })
+  } else if (error.name ===  "JsonWebTokenError") {
+    return response.status(400).json({ error: "token missing or invalid" })
+  } else if (error.name === "TokenExpiredError") {
+    return response.status(401).json({
+      error: "token expired"
+    })
   }
 
   next(error)
@@ -42,7 +50,18 @@ const userValidator = (request, response, next) => {
   }
 }
 
+const tokenExtractor = (request, response, next) => {
+  const authHeader = request.get("authorization")
+  if (/^bearer /i.test(authHeader)) {
+    request.token = authHeader.replace(/bearer /ig, "")
+  }
+  next()
+}
+
+
+
 module.exports = {
+  tokenExtractor,
   requestLogger,
   unknownEndpoint,
   errorHandler,
