@@ -26,10 +26,16 @@ const errorHandler = (error, _, response, next) => {
   } else if (error.name === "UserPasswordValidationError") {
     return response.status(400).json({ error: error.message })
   } else if (error.name ===  "JsonWebTokenError") {
-    return response.status(400).json({ error: "token missing or invalid" })
+    return response.status(400).json({
+      error: "token missing or invalid"
+    })
   } else if (error.name === "TokenExpiredError") {
     return response.status(401).json({
       error: "token expired"
+    })
+  } else if (error.name === "InvalidTokenError") {
+    return response.status(401).json({
+      error: "token invalid"
     })
   }
 
@@ -72,7 +78,22 @@ const userExtractor = async (request, response, next) => {
   }
 }
 
+const authenticate = (request, response, next) => {
+  try {
+    const decodedToken = jwt.verify(request.token, SECRET)
+    if (!decodedToken.id) {
+      const e = new Error("token invalid")
+      e.name = "InvalidTokenError"
+      throw e
+    }
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
+  authenticate,
   userExtractor,
   tokenExtractor,
   requestLogger,
