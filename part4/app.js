@@ -10,7 +10,7 @@ const {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
 } = require("./utils/middlewares")
 
 app.use(cors())
