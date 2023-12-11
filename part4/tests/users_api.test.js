@@ -44,7 +44,7 @@ describe("with initial user in DB", () => {
       expect(addedUser.name).toEqual(payload.name)
       expect(addedUser.username).toEqual(payload.username)
       expect(addedUser.id).toBeDefined()
-      expect(addedUser.notes).toBeDefined()
+      expect(addedUser.blogs).toBeDefined()
       expect(addedUser.passwordHash).not.toBeDefined()
     })
 
