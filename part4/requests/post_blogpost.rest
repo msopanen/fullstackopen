@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF2aXJ0YW5lbiIsImlkIjoiNjU3NmViMGJiMTE2MDIxNzcwZGVlNjdhIiwiaWF0IjoxNzAyMjk5NDExfQ.9bDrvoDBbj3N9WY_1d79T8GucoLKstbQIzIoFUK5bHI
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF2aXJ0YW5lbiIsImlkIjoiNjU3NzRhMzk1MzY4ODBlNzFhNjg0Nzc2IiwiaWF0IjoxNzAyMzE2NjM3LCJleHAiOjE3MDIzMjAyMzd9.qWcvnPB0CUiUbWEyTa9I4WnjSxCMiIdJpYjNOhGFgY4
 
 {
     "title": "Sotaromaani",
-    "author": "Vaino Linna",
+    "author": "Artturi Iivari Virtanen",
     "url": "https://xyz",
     "likes": 5
 }
