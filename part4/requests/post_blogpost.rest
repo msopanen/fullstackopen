@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF2aXJ0YW5lbiIsImlkIjoiNjU3NzRhMzk1MzY4ODBlNzFhNjg0Nzc2IiwiaWF0IjoxNzAyMzI2MTI3LCJleHAiOjE3MDIzMjk3Mjd9.Uff7mWpwqLvVs_djZLX3CGnh5HS05MU0jl_3QeflTqc
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF2aXJ0YW5lbiIsImlkIjoiNjU3NzRhMzk1MzY4ODBlNzFhNjg0Nzc2IiwiaWF0IjoxNzAyMzcwNTAwLCJleHAiOjE3MDIzNzQxMDB9.TJ1RUd3Y9CZqjt0EVPHUjYVFhOvnmtjcxdK2npssTOw
 
 {
     "title": "Sotaromaani",
