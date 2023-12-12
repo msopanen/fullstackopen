@@ -21,6 +21,13 @@ const initialBlogs = [
   }
 ]
 
+const initTestBlogs = async (user) => {
+  await Blog.deleteMany({})
+  await Blog.insertMany(
+    initialBlogs.map(r => ({ ...r, user }))
+  )
+}
+
 const pickBlogById = (blogs, expectedId) => {
   return blogs.find(({ id }) =>
     id === expectedId)
@@ -38,6 +45,7 @@ const blogsInDb = async () => {
 
 module.exports = {
   initialBlogs,
+  initTestBlogs,
   pickBlogById,
   pickBlogByTitle,
   blogsInDb
