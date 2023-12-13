@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
+import { useUser } from "./utils/useUser";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [user, setUser, clearUser] = useUser();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -62,6 +63,9 @@ const App = () => {
     <>
       {user ? (
         <div>
+          <button onClick={clearUser} type="button">
+            logout
+          </button>
           <h2>blogs</h2>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
