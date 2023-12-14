@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const LOCAL_STORAGE_USER = "fi.fullstackopen.token";
+export const LOCAL_STORAGE_USER = "fi.fullstackopen.token";
 
 const getStoredUser = () => {
   const stored = window.localStorage.getItem(LOCAL_STORAGE_USER);
