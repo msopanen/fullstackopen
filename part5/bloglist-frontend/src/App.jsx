@@ -28,7 +28,7 @@ const App = () => {
   useEffect(() => {
     const delay = setTimeout(() => setNotification({ message: null }), 5000);
     return () => clearTimeout(delay);
-  }, [notification]);
+  }, [notification.message]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -55,7 +55,7 @@ const App = () => {
 
   const handleCreate = async ({ title, author, url }) => {
     try {
-      const blog = await blogService.create({
+      const blog = await blogService.createBlog({
         title: title,
         author: author,
         url: url,
@@ -82,7 +82,7 @@ const App = () => {
 
   const handleUpdate = async (updatedBlog) => {
     try {
-      const blog = await blogService.update(updatedBlog.id, updatedBlog);
+      const blog = await blogService.updateBlog(updatedBlog.id, updatedBlog);
       setBlogs((prevBlogs) =>
         sortBlogs(
           prevBlogs.map((r) => (r.id === blog.id ? { ...r, ...blog } : r)),
@@ -90,7 +90,25 @@ const App = () => {
       );
     } catch (error) {
       setNotification({
-        message: "could not update blog",
+        message: `could not update blog: ${error.message}`,
+        error: true,
+      });
+    }
+  };
+
+  const handleRemove = async (removedBlog) => {
+    try {
+      if (
+        window.confirm(`do you want to remove blog: ${removedBlog.title} ?`)
+      ) {
+        await blogService.deleteBlog(removedBlog.id);
+        setBlogs((prevBlogs) =>
+          prevBlogs.filter((r) => r.id !== removedBlog.id),
+        );
+      }
+    } catch (error) {
+      setNotification({
+        message: "could not delete blog",
         error: true,
       });
     }
@@ -135,7 +153,13 @@ const App = () => {
           <h2>blogs</h2>
           <Notification notification={notification} />
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} onUpdate={handleUpdate} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              loggedUser={user}
+              onUpdate={handleUpdate}
+              onRemove={handleRemove}
+            />
           ))}
           <Togglable btnLabel="create" ref={createFormRef}>
             <CreateNewBlog onCreateNew={handleCreate} />

@@ -1,20 +1,26 @@
 import { useState } from "react";
 
-const Blog = ({ blog, onUpdate }) => {
+const showRemoveBtn = (user, blog) => {
+  return user.username === blog.user.username;
+};
+
+const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
   const [showDetails, setShowDetails] = useState(false);
 
-  const toggleDetails = (e) => {
-    e.preventDefault();
+  const toggleDetails = () => {
     setShowDetails((prev) => !prev);
   };
 
-  const handleLike = async (e) => {
-    e.preventDefault();
+  const handleLike = async () => {
     const likedBlog = {
       ...blog,
       likes: blog.likes + 1,
     };
     onUpdate(likedBlog);
+  };
+
+  const handleRemove = () => {
+    onRemove(blog);
   };
 
   const blogStyle = {
@@ -35,6 +41,10 @@ const Blog = ({ blog, onUpdate }) => {
           <br />
           {blog.author}
         </div>
+      )}
+      <br />
+      {showRemoveBtn(loggedUser, blog) && (
+        <button onClick={handleRemove}>remove</button>
       )}
     </div>
   );
