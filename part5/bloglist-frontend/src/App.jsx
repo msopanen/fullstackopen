@@ -60,6 +60,10 @@ const App = () => {
         url: url,
       });
 
+      // Add newly created blog to the list of the blogs
+      // NOTE: instead of relading all of the blogs we can use
+      // newly created blog object to concatenate it at the end
+      // on the blogs.
       setBlogs((prevBlogs) => prevBlogs.concat(blog));
 
       setNotification({
