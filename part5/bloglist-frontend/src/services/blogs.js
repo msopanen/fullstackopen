@@ -13,7 +13,7 @@ const getAll = async () => {
 };
 
 const create = async (blog) => {
-  const { data } = axios.post(baseUrl, blog, {
+  const { data } = await axios.post(baseUrl, blog, {
     headers: {
       Authorization: `bearer ${getToken()}`,
     },

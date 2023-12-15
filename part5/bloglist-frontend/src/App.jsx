@@ -3,10 +3,14 @@ import Blog from "./components/Blog";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
 import { useUser } from "./utils/useUser";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [notification, setNotification] = useState({
+    message: null,
+    error: false,
+  });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,6 +24,11 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const delay = setTimeout(() => setNotification({ message: null }), 5000);
+    return () => clearTimeout(delay);
+  }, [notification]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -31,64 +40,82 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (error) {
-      console.log({ error });
-      setErrorMessage("wrong credentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      setNotification({
+        message: "wrong username or password",
+        error: true,
+      });
     }
+  };
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    clearUser();
   };
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url,
-    };
+    try {
+      const blog = await blogService.create({
+        title: title,
+        author: author,
+        url: url,
+      });
 
-    await blogService.create(newBlog);
+      setBlogs((prevBlogs) => prevBlogs.concat(blog));
 
-    setTitle("");
-    setAuthor("");
-    setUrl();
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+      setNotification({
+        message: `a new blog ${title} added`,
+      });
+
+      setTitle("");
+      setAuthor("");
+      setUrl();
+    } catch (error) {
+      setNotification({
+        message: "could not create new blog",
+        error: true,
+      });
+    }
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <h1>log in to application</h1>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  );
+  const loginForm = () => {
+    return (
+      <form onSubmit={handleLogin}>
+        <h1>log in to application</h1>
+        <Notification notification={notification} />
+        <div>
+          username
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    );
+  };
 
   return (
     <>
       {user ? (
         <div>
           {user.name}
-          <button onClick={clearUser} type="button">
+          <button onClick={handleLogout} type="button">
             logout
           </button>
           <h2>blogs</h2>
+          <Notification notification={notification} />
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
