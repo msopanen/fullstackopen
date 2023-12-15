@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const showRemoveBtn = (user, blog) => {
   return user.username === blog.user.username;
@@ -48,6 +49,22 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
       )}
     </div>
   );
+};
+
+Blog.propTypes = {
+  loggedUser: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }),
+  blog: PropTypes.shape({
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    user: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }),
+  }),
+  onUpdate: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default Blog;
