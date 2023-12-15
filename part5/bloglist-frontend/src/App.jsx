@@ -6,6 +6,7 @@ import { useUser } from "./utils/useUser";
 import Notification from "./components/Notification";
 import CreateNewBlog from "./components/CreateNewBlog";
 import Togglable from "./components/Togglable";
+import sortBlogs from "./utils/blogSorter";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -21,7 +22,7 @@ const App = () => {
   const createFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)));
   }, []);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const App = () => {
       // NOTE: instead of relading all of the blogs we can use
       // newly created blog object to concatenate it at the end
       // on the blogs.
-      setBlogs((prevBlogs) => prevBlogs.concat(blog));
+      setBlogs((prevBlogs) => sortBlogs(prevBlogs.concat(blog)));
 
       setNotification({
         message: `a new blog ${title} added`,
@@ -80,10 +81,19 @@ const App = () => {
   };
 
   const handleUpdate = async (updatedBlog) => {
-    const blog = await blogService.update(updatedBlog.id, updatedBlog);
-    setBlogs((prev) =>
-      prev.map((r) => (r.id === blog.id ? { ...r, ...blog } : r)),
-    );
+    try {
+      const blog = await blogService.update(updatedBlog.id, updatedBlog);
+      setBlogs((prevBlogs) =>
+        sortBlogs(
+          prevBlogs.map((r) => (r.id === blog.id ? { ...r, ...blog } : r)),
+        ),
+      );
+    } catch (error) {
+      setNotification({
+        message: "could not update blog",
+        error: true,
+      });
+    }
   };
 
   const loginForm = () => {
