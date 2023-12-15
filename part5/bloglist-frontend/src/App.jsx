@@ -79,6 +79,13 @@ const App = () => {
     }
   };
 
+  const handleUpdate = async (updatedBlog) => {
+    const blog = await blogService.update(updatedBlog.id, updatedBlog);
+    setBlogs((prev) =>
+      prev.map((r) => (r.id === blog.id ? { ...r, ...blog } : r)),
+    );
+  };
+
   const loginForm = () => {
     return (
       <form onSubmit={handleLogin}>
@@ -118,7 +125,7 @@ const App = () => {
           <h2>blogs</h2>
           <Notification notification={notification} />
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} onUpdate={handleUpdate} />
           ))}
           <Togglable btnLabel="create" ref={createFormRef}>
             <CreateNewBlog onCreateNew={handleCreate} />

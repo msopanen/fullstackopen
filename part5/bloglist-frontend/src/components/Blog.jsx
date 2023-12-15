@@ -1,11 +1,20 @@
 import { useState } from "react";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, onUpdate }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const toggleDetails = (e) => {
     e.preventDefault();
     setShowDetails((prev) => !prev);
+  };
+
+  const handleLike = async (e) => {
+    e.preventDefault();
+    const likedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    };
+    onUpdate(likedBlog);
   };
 
   const blogStyle = {
@@ -22,7 +31,7 @@ const Blog = ({ blog }) => {
         <div>
           {blog.url}
           <br />
-          {blog.likes} <button>like</button>
+          {blog.likes} <button onClick={handleLike}>like</button>
           <br />
           {blog.author}
         </div>
