@@ -29,5 +29,14 @@ describe("Blog", () => {
 
     const title = screen.getByText("TestTitle");
     expect(title).toBeDefined();
+
+    const author = screen.queryByText("TestAuthor");
+    expect(author).toBeNull();
+
+    const url = screen.queryByText("https://test-url");
+    expect(url).toBeNull();
+
+    const likes = screen.queryByText("likes:");
+    expect(likes).toBeNull();
   });
 });
