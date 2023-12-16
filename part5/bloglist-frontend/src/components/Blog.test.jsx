@@ -1,29 +1,29 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Blog from "./Blog";
 
 describe("Blog", () => {
+  const mockUser = { username: "Paavo" };
+  const mockBlog = {
+    author: "TestAuthor",
+    title: "TestTitle",
+    url: "https://test-url",
+    likes: 1,
+    user: {
+      username: "testauthor",
+    },
+  };
+
+  const noOp = () => {};
+
   test("renders only title by default", () => {
-    const spyUpdateFn = jest.fn();
-    const spyRemoveFn = jest.fn();
-
-    const mockUser = { username: "Paavo" };
-    const mockBlog = {
-      author: "TestAuthor",
-      title: "TestTitle",
-      url: "https://test-url",
-      likes: 1,
-      user: {
-        username: "testauthor",
-      },
-    };
-
     render(
       <Blog
         blog={mockBlog}
         loggedUser={mockUser}
-        onUpdate={spyUpdateFn}
-        onRemove={spyRemoveFn}
+        onUpdate={noOp}
+        onRemove={noOp}
       />,
     );
 
@@ -38,5 +38,32 @@ describe("Blog", () => {
 
     const likes = screen.queryByText("likes:");
     expect(likes).toBeNull();
+  });
+
+  test("renders all data after show button press", async () => {
+    const user = userEvent.setup();
+    render(
+      <Blog
+        blog={mockBlog}
+        loggedUser={mockUser}
+        onUpdate={noOp}
+        onRemove={noOp}
+      />,
+    );
+
+    const title = screen.getByText("TestTitle");
+    expect(title).toBeDefined();
+
+    const showBtn = screen.getByText("show");
+    await user.click(showBtn);
+
+    const author = screen.getByText("TestAuthor", { exact: false });
+    expect(author).toBeDefined();
+
+    const url = await screen.getByText("https://test-url", { exact: false });
+    expect(url).toBeDefined();
+
+    const likes = screen.getByText("likes:", { exact: false });
+    expect(likes).toBeDefined();
   });
 });
