@@ -66,4 +66,27 @@ describe("Blog", () => {
     const likes = screen.getByText("likes:", { exact: false });
     expect(likes).toBeDefined();
   });
+
+  test("calls onUpdate callback twice when like button is pressed twice", async () => {
+    const user = userEvent.setup();
+    const updateSpy = jest.fn();
+
+    render(
+      <Blog
+        blog={mockBlog}
+        loggedUser={mockUser}
+        onUpdate={updateSpy}
+        onRemove={noOp}
+      />,
+    );
+
+    const showBtn = screen.getByText("show");
+    await user.click(showBtn);
+
+    const likeBtn = screen.getByText("like");
+    await user.click(likeBtn);
+    await user.click(likeBtn);
+
+    expect(updateSpy).toBeCalledTimes(2);
+  });
 });
