@@ -32,7 +32,7 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       {blog.title}
       <button id="details-toggle-button" onClick={toggleDetails}>
         {showDetails ? "hide" : "show"}
