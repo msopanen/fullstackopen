@@ -2,7 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 const showRemoveBtn = (user, blog) => {
-  return user.username === blog.user.username;
+  const blogUserName = blog.user ? blog.user.username : "";
+  return user.username === blogUserName;
 };
 
 const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
