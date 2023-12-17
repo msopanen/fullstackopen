@@ -67,5 +67,21 @@ describe("blog app", function () {
       // Verify blog list
       cy.contains("cypress testing");
     });
+
+    it("A blog can be liked", function () {
+      cy.createBlog({
+        title: "do you like cypress testing?",
+        author: "Cypress Tester",
+        url: "https://blogs-test-url",
+      });
+
+      cy.get("#details-toggle-button").click();
+
+      cy.contains("likes: 0");
+
+      cy.get("#like-button").click();
+
+      cy.contains("likes: 1");
+    });
   });
 });
