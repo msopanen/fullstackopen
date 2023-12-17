@@ -45,7 +45,7 @@ const CreateNewBlog = ({ onCreateNew }) => {
           placeholder="blog url"
         />
       </div>
-      <button onClick={handleCreateNew} type="button">
+      <button id="create-blog-button" onClick={handleCreateNew} type="button">
         create
       </button>
     </div>
