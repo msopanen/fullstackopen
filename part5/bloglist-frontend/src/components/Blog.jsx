@@ -51,7 +51,9 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
       )}
       <br />
       {showRemoveBtn(loggedUser, blog) && (
-        <button onClick={handleRemove}>remove</button>
+        <button id="remove-button" onClick={handleRemove}>
+          remove
+        </button>
       )}
     </div>
   );

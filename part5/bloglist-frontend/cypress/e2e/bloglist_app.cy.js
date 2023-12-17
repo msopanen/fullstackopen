@@ -2,12 +2,18 @@ describe("blog app", function () {
   beforeEach(function () {
     cy.request("POST", "http://localhost:3001/api/testing/reset");
 
-    const user = {
-      username: "ctester",
-      name: "Cypress Tester",
+    const aUser = {
+      username: "atester",
+      name: "Cypress Tester A",
       password: "s3cr3t",
     };
-    cy.request("POST", "http://localhost:3001/api/users", user);
+    cy.request("POST", "http://localhost:3001/api/users", aUser);
+    const bUser = {
+      username: "btester",
+      name: "Cypress Tester B",
+      password: "s3cr3t",
+    };
+    cy.request("POST", "http://localhost:3001/api/users", bUser);
     cy.visit("http://localhost:5173");
   });
 
@@ -20,16 +26,16 @@ describe("blog app", function () {
     describe("login", function () {
       it("succeeds with correct credentials", function () {
         cy.contains("log in to application").click();
-        cy.get("#username-input").type("ctester");
+        cy.get("#username-input").type("atester");
         cy.get("#password-input").type("s3cr3t");
         cy.get("#login-button").click();
 
-        cy.contains("Cypress Tester logged in");
+        cy.contains("Cypress Tester A logged in");
       });
 
       it("fails with wrong credentials", function () {
         cy.contains("log in to application").click();
-        cy.get("#username-input").type("ctester");
+        cy.get("#username-input").type("atester");
         cy.get("#password-input").type("wrong-password");
         cy.get("#login-button").click();
 
@@ -38,14 +44,14 @@ describe("blog app", function () {
         cy.get(".notification").should("have.css", "color", "rgb(255, 0, 0)");
         cy.get(".notification").should("have.css", "border-style", "solid");
 
-        cy.contains("Cypress Tester logged in").should("not.exist");
+        cy.contains("Cypress Tester A logged in").should("not.exist");
       });
     });
   });
 
   describe("When logged in", function () {
     beforeEach(function () {
-      cy.login({ username: "ctester", password: "s3cr3t" });
+      cy.login({ username: "atester", password: "s3cr3t" });
     });
 
     it("A blog can be created", function () {
@@ -82,6 +88,21 @@ describe("blog app", function () {
       cy.get("#like-button").click();
 
       cy.contains("likes: 1");
+    });
+
+    it("A blog can be removed", function () {
+      // NOTE: blog will be create as a logged in user that is atester
+      cy.createBlog({
+        title: "this blog will be removed",
+        author: "Cypress Tester",
+        url: "https://blogs-test-url",
+      });
+
+      cy.contains("this blog will be removed");
+
+      cy.get("#remove-button").click();
+
+      cy.contains("this blog will be removed").should("not.exist");
     });
   });
 });
