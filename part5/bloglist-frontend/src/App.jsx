@@ -122,6 +122,7 @@ const App = () => {
         <div>
           username
           <input
+            id="username-input"
             type="text"
             value={username}
             name="Username"
@@ -131,13 +132,16 @@ const App = () => {
         <div>
           password
           <input
+            id="password-input"
             type="password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button id="login-button" type="submit">
+          login
+        </button>
       </form>
     );
   };
@@ -146,10 +150,12 @@ const App = () => {
     <>
       {user ? (
         <div>
-          {user.name}
-          <button onClick={handleLogout} type="button">
-            logout
-          </button>
+          <h2>
+            {user.name} logged in
+            <button onClick={handleLogout} type="button">
+              logout
+            </button>
+          </h2>
           <h2>blogs</h2>
           <Notification notification={notification} />
           {blogs.map((blog) => (
