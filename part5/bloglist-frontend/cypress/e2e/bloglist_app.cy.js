@@ -49,12 +49,12 @@ describe("blog app", function () {
     });
   });
 
-  describe("When logged in", function () {
+  describe("when logged in", function () {
     beforeEach(function () {
       cy.login({ username: "atester", password: "s3cr3t" });
     });
 
-    it("A blog can be created", function () {
+    it("a blog can be created", function () {
       cy.get("#create-toggle-button").click();
 
       cy.get('input[placeholder*="blog title"]').type("cypress testing");
@@ -74,7 +74,7 @@ describe("blog app", function () {
       cy.contains("cypress testing");
     });
 
-    it("A blog can be liked", function () {
+    it("a blog can be liked", function () {
       cy.createBlog({
         title: "do you like cypress testing?",
         author: "Cypress Tester",
@@ -90,8 +90,9 @@ describe("blog app", function () {
       cy.contains("likes: 1");
     });
 
-    it("A blog can be removed", function () {
-      // NOTE: blog will be create as a logged in user that is atester
+    it("a blog can be removed", function () {
+      // NOTE: blog will be create as a logged in user that is
+      // atester by default
       cy.createBlog({
         title: "this blog will be removed",
         author: "Cypress Tester",
@@ -103,6 +104,22 @@ describe("blog app", function () {
       cy.get("#remove-button").click();
 
       cy.contains("this blog will be removed").should("not.exist");
+    });
+
+    it("remove blog button is visible only for a user who has created it", function () {
+      // NOTE: blog will be create as a logged in user that is
+      // atester by default
+      cy.createBlog({
+        title: "this blog can be removed only by atester",
+        author: "Cypress Tester",
+        url: "https://blogs-test-url",
+      });
+
+      cy.get("#remove-button").should("exist");
+
+      cy.login({ username: "btester", password: "s3cr3t" });
+
+      cy.get("#remove-button").should("not.exist");
     });
   });
 });
