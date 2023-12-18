@@ -38,4 +38,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+export const selectAnecdotes = (state) =>
+  state.sort((a, b) => b.votes - a.votes);
+
 export default reducer;
