@@ -1,9 +1,9 @@
 import axios from "axios";
-import { LOCAL_STORAGE_USER } from "../utils/useUser";
+import { USER_VAULT } from "../utils/useUser";
 const baseUrl = "/api/blogs";
 
 const getToken = () => {
-  const stored = window.localStorage.getItem(LOCAL_STORAGE_USER);
+  const stored = window.localStorage.getItem(USER_VAULT);
   return JSON.parse(stored || "{}")["token"];
 };
 

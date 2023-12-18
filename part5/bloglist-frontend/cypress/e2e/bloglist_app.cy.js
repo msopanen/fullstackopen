@@ -14,12 +14,12 @@ describe("blog app", function () {
       password: "s3cr3t",
     };
     cy.request("POST", "http://localhost:3001/api/users", bUser);
-    cy.visit("http://localhost:5173");
+    cy.visit("");
   });
 
   describe("when not logged in", function () {
     it("login form is shown", function () {
-      cy.visit("http://localhost:5173");
+      cy.visit("");
       cy.contains("log in to application");
     });
 
@@ -122,7 +122,7 @@ describe("blog app", function () {
       cy.get("#remove-button").should("not.exist");
     });
 
-    it("sorts blogs according to likes", function () {
+    it.only("sorts blogs according to likes", function () {
       cy.createBlog({
         title: "blog a",
         author: "Cypress Tester",

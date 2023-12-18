@@ -24,27 +24,27 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-const TOKEN = "fi.fullstackopen.token";
-
 Cypress.Commands.add("login", ({ username, password }) => {
-  cy.request("POST", "http://localhost:3001/api/login", {
+  cy.request("POST", `${Cypress.env("BACKEND")}/login`, {
     username,
     password,
   }).then(({ body }) => {
-    localStorage.setItem(TOKEN, JSON.stringify(body));
-    cy.visit("http://localhost:5173");
+    localStorage.setItem(`${Cypress.env("USER_VAULT")}`, JSON.stringify(body));
+    cy.visit("");
   });
 });
 
 Cypress.Commands.add("createBlog", ({ title, author, url, likes = 0 }) => {
   cy.request({
-    url: "http://localhost:3001/api/blogs",
+    url: `${Cypress.env("BACKEND")}/blogs`,
     method: "POST",
     body: { title, author, url, likes },
     headers: {
-      Authorization: `Bearer ${JSON.parse(localStorage.getItem(TOKEN)).token}`,
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem(`${Cypress.env("USER_VAULT")}`)).token
+      }`,
     },
   });
 
-  cy.visit("http://localhost:5173");
+  cy.visit("");
 });

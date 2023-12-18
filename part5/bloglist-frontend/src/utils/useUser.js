@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 
-export const LOCAL_STORAGE_USER = "fi.fullstackopen.token";
+export const USER_VAULT = "fi.fullstackopen.user";
 
 const getStoredUser = () => {
-  const stored = window.localStorage.getItem(LOCAL_STORAGE_USER);
+  const stored = window.localStorage.getItem(USER_VAULT);
   return JSON.parse(stored) || null;
 };
 
 const setStoredUser = (user) => {
-  window.localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(user));
+  window.localStorage.setItem(USER_VAULT, JSON.stringify(user));
 };
 
 const removeStoredUser = () => {
-  window.localStorage.removeItem(LOCAL_STORAGE_USER);
+  window.localStorage.removeItem(USER_VAULT);
 };
 
 export const useUser = () => {
