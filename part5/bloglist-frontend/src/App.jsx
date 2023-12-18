@@ -85,7 +85,9 @@ const App = () => {
       const blog = await blogService.updateBlog(updatedBlog.id, updatedBlog);
       setBlogs((prevBlogs) =>
         sortBlogs(
-          prevBlogs.map((r) => (r.id === blog.id ? { ...r, ...blog } : r)),
+          prevBlogs.map((r) =>
+            r.id === blog.id ? { ...r, likes: blog.likes } : r,
+          ),
         ),
       );
     } catch (error) {

@@ -88,6 +88,7 @@ describe("blog app", function () {
       cy.get("#like-button").click();
 
       cy.contains("likes: 1");
+      cy.get("#remove-button").should("exist");
     });
 
     it("a blog can be removed", function () {
@@ -122,7 +123,7 @@ describe("blog app", function () {
       cy.get("#remove-button").should("not.exist");
     });
 
-    it.only("sorts blogs according to likes", function () {
+    it("sorts blogs according to likes", function () {
       cy.createBlog({
         title: "blog a",
         author: "Cypress Tester",
