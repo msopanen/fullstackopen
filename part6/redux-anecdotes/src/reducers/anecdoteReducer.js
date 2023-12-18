@@ -23,10 +23,14 @@ const reducer = (state = initialState, action) => {
   console.log("state now: ", state);
   console.log("action", action);
   switch (action.type) {
+    case "ADD": {
+      const newRecord = asObject(action.payload);
+      return state.concat(newRecord);
+    }
     case "VOTE": {
-      const vId = action.payload;
+      const anecdoteId = action.payload;
       return state.map((r) =>
-        r.id === vId ? { ...r, votes: r.votes + 1 } : r,
+        r.id === anecdoteId ? { ...r, votes: r.votes + 1 } : r,
       );
     }
     default:
