@@ -38,6 +38,16 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+export const addAnecdote = (anecdote) => ({
+  type: "ADD",
+  payload: anecdote,
+});
+
+export const voteAnecdote = (id) => ({
+  type: "VOTE",
+  payload: id,
+});
+
 export const selectAnecdotes = (state) =>
   state.sort((a, b) => b.votes - a.votes);
 
