@@ -49,6 +49,6 @@ export const voteAnecdote = (id) => ({
 });
 
 export const selectAnecdotes = (state) =>
-  state.sort((a, b) => b.votes - a.votes);
+  state.anecdotes.sort((a, b) => b.votes - a.votes);
 
 export default reducer;
