@@ -5,8 +5,6 @@ const filterFn = (filter) => (r) => {
   return r.content.toLowerCase().includes(filter.toLowerCase());
 };
 
-const sortFn = (a, b) => b.votes - a.votes;
-
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
   const filter = useSelector((state) => state.filter.text);
@@ -19,18 +17,15 @@ const AnecdoteList = () => {
 
   return (
     <>
-      {anecdotes
-        .filter(filterFn(filter))
-        .sort(sortFn)
-        .map((anecdote) => (
-          <div key={anecdote.id}>
-            <div>{anecdote.content}</div>
-            <div>
-              has {anecdote.votes}
-              <button onClick={() => vote(anecdote.id)}>vote</button>
-            </div>
+      {anecdotes.filter(filterFn(filter)).map((anecdote) => (
+        <div key={anecdote.id}>
+          <div>{anecdote.content}</div>
+          <div>
+            has {anecdote.votes}
+            <button onClick={() => vote(anecdote.id)}>vote</button>
           </div>
-        ))}
+        </div>
+      ))}
     </>
   );
 };
