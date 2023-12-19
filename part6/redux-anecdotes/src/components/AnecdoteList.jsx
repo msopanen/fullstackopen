@@ -16,7 +16,6 @@ const AnecdoteList = () => {
     dispatch(voteAnecdote(id));
   };
 
-  console.log({ filter });
   return (
     <>
       {anecdotes.filter(filterFn(filter)).map((anecdote) => (
