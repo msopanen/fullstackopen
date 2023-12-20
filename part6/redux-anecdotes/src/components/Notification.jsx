@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 const Notification = () => {
   const notification = useSelector((state) => state.notification);
   const visible = notification.length > 0;
-  console.log({ notification });
+
   const style = {
     border: "solid",
     padding: 10,
