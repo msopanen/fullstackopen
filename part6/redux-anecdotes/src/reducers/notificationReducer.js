@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addAnecdote, voteAnecdote } from "./anecdoteReducer";
+//import { addAnecdote, voteAnecdote } from "./anecdoteReducer";
 
 const initialState = "";
 
@@ -7,11 +7,17 @@ const notificationSlice = createSlice({
   name: "notification",
   initialState,
   reducers: {
+    showNotification(state, action) {
+      return action.payload;
+    },
     hideNotification() {
       return "";
     },
   },
-  extraReducers: (builder) => {
+  // NOTE: Execrice 6.13 and 6.19 could be also implemented
+  // using extra reducers that are listening anecdoteReducer
+  // changes. I'm leving this example here for my self!!!
+  /*extraReducers: (builder) => {
     function showVoteNotification(state, action) {
       return `You voted '${action.payload.content}'`;
     }
@@ -21,8 +27,8 @@ const notificationSlice = createSlice({
     builder
       .addCase(voteAnecdote, showVoteNotification)
       .addCase(addAnecdote, showAddNotification);
-  },
+  },*/
 });
 
-export const { hideNotification } = notificationSlice.actions;
+export const { showNotification, hideNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;

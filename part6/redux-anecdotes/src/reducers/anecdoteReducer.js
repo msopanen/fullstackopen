@@ -34,8 +34,8 @@ const anecdotesSlice = createSlice({
       state.push(asObject(action.payload));
     },
     voteAnecdote(state, action) {
-      const { id } = action.payload;
-      return state.map(increaseVotesFn(id)).sort(sortFn);
+      const anecdoteId = action.payload;
+      return state.map(increaseVotesFn(anecdoteId)).sort(sortFn);
     },
   },
 });
