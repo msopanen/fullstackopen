@@ -4,8 +4,8 @@ import anecdotesService from "../services/anecdotes";
 
 const sortFn = (a, b) => b.votes - a.votes;
 
-const increaseVotesFn = (id) => (r) =>
-  r.id === id ? { ...r, votes: r.votes + 1 } : r;
+const updateFn = (andecdote) => (r) =>
+  r.id === andecdote.id ? { ...andecdote } : r;
 
 const initialState = [];
 
@@ -16,12 +16,12 @@ const anecdotesSlice = createSlice({
     addAnecdote(state, action) {
       state.push(action.payload);
     },
-    voteAnecdote(state, action) {
-      const anecdoteId = action.payload;
-      return state.map(increaseVotesFn(anecdoteId)).sort(sortFn);
+    updateAnecdote(state, action) {
+      console.log("U: ", action.payload);
+      return state.map(updateFn(action.payload)).sort(sortFn);
     },
     setAnecdotes(state, action) {
-      return action.payload;
+      return action.payload.sort(sortFn);
     },
   },
 });
@@ -40,6 +40,13 @@ export const createAnecdote = (anecdote) => {
   };
 };
 
-export const { addAnecdote, voteAnecdote, setAnecdotes } =
+export const voteAnecdote = (anecdote) => {
+  return async (dispatch) => {
+    const votedAnecdote = await anecdotesService.vote(anecdote);
+    dispatch(updateAnecdote(votedAnecdote));
+  };
+};
+
+export const { addAnecdote, setAnecdotes, updateAnecdote } =
   anecdotesSlice.actions;
 export default anecdotesSlice.reducer;
