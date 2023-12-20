@@ -17,7 +17,6 @@ const anecdotesSlice = createSlice({
       state.push(action.payload);
     },
     updateAnecdote(state, action) {
-      console.log("U: ", action.payload);
       return state.map(updateFn(action.payload)).sort(sortFn);
     },
     setAnecdotes(state, action) {
