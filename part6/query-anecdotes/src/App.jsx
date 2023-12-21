@@ -16,18 +16,18 @@ const App = () => {
 
   const queryClient = useQueryClient();
 
+  const dispatchNotification = useNotificationDispatch();
+
   const voteAnecdoteMutation = useMutation({
     mutationFn: voteAnecdote,
-    onSuccess: () => {
+    onSuccess: ({ content }) => {
       queryClient.invalidateQueries("anecdotes");
+      dispatchNotification(showNotification(`'${content}' voted`, 5000));
     },
   });
 
-  const dispatchNotification = useNotificationDispatch();
-
   const handleVote = (anecdote) => {
     voteAnecdoteMutation.mutate(anecdote);
-    dispatchNotification(showNotification(`'${anecdote.content}' voted`, 5000));
   };
 
   if (isError) {

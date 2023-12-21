@@ -8,22 +8,24 @@ import {
 const AnecdoteForm = () => {
   const queryClient = useQueryClient();
 
+  const dispatchNotification = useNotificationDispatch();
+
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
-    onSuccess: () => {
+    onSuccess: ({ content }) => {
       queryClient.invalidateQueries("anecdotes");
+      dispatchNotification(showNotification(`'${content}' created`, 5000));
+    },
+    onError: ({ response }) => {
+      dispatchNotification(showNotification(`${response.data.error}`, 5000));
     },
   });
-
-  const dispatchNotification = useNotificationDispatch();
 
   const onCreate = (event) => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
     newAnecdoteMutation.mutate(content);
-
-    dispatchNotification(showNotification(`'${content}' created`, 5000));
   };
 
   return (
