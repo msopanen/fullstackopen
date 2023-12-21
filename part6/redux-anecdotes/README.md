@@ -1,8 +1,16 @@
-# React + Vite
+# Part 6 redux anecdotes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Redux anecdotes exercises 
 
-Currently, two official plugins are available:
+# Requirements
+- Nodejs 18.x
+- Npm
+# Usage
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To launch frontend application run :
+- npm install
+- npm run server
+- npm run dev
+- npm start
+
+Go to address http://localhost:5173
