@@ -23,3 +23,19 @@ const asObject = (anecdote) => {
     votes: 0,
   };
 };
+
+// vote anecdote
+// -------------------------------------------------
+const asVoted = (andecdote) => {
+  return {
+    ...andecdote,
+    votes: andecdote.votes + 1,
+  };
+};
+
+export const voteAnecdote = async (andecdote) => {
+  const object = asVoted(andecdote);
+  return axios
+    .put(`${baseUrl}/${andecdote.id}`, object)
+    .then((res) => res.data);
+};

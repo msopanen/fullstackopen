@@ -1,18 +1,27 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
-import { getAnecdotes } from "./services/anecdotes";
+import { getAnecdotes, voteAnecdote } from "./services/anecdotes";
 
 const App = () => {
-  const handleVote = (anecdote) => {
-    console.log("vote");
-  };
-
   const { isSuccess, isError, data } = useQuery({
     queryKey: ["anecdotes"],
     queryFn: getAnecdotes,
   });
+
+  const queryClient = useQueryClient();
+
+  const voteAnecdoteMutation = useMutation({
+    mutationFn: voteAnecdote,
+    onSuccess: () => {
+      queryClient.invalidateQueries("anecdotes");
+    },
+  });
+
+  const handleVote = (anecdote) => {
+    voteAnecdoteMutation.mutate(anecdote);
+  };
 
   if (isError) {
     return <div>anecdote service not available due to problems in server</div>;
