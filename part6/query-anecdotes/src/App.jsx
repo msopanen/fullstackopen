@@ -3,6 +3,10 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
 import { getAnecdotes, voteAnecdote } from "./services/anecdotes";
+import {
+  useNotificationDispatch,
+  showNotification,
+} from "./components/NotificationContext";
 
 const App = () => {
   const { isSuccess, isError, data } = useQuery({
@@ -19,8 +23,11 @@ const App = () => {
     },
   });
 
+  const dispatchNotification = useNotificationDispatch();
+
   const handleVote = (anecdote) => {
     voteAnecdoteMutation.mutate(anecdote);
+    dispatchNotification(showNotification(`'${anecdote.content}' voted`, 5000));
   };
 
   if (isError) {
