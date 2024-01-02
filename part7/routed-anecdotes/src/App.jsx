@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 import { useState } from "react";
 
 const Menu = ({ anecdotes, addNew }) => {
@@ -23,6 +29,10 @@ const Menu = ({ anecdotes, addNew }) => {
         <Route path="/about" element={<About />} />
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route
+          path="/anecdote/:id"
+          element={<Anecdote anecdotes={anecdotes} />}
+        />
       </Routes>
     </Router>
   );
@@ -33,11 +43,40 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
 );
+
+const Anecdote = ({ anecdotes }) => {
+  const { id } = useParams();
+  const anecdote = anecdotes.find((r) => r.id === Number(id));
+  return (
+    <>
+      {anecdote ? (
+        <>
+          <h2>{`${anecdote.content} by ${anecdote.author}`}</h2>
+          {`has ${anecdote.votes} votes`}
+          <br />
+          for more info see
+          <Link
+            style={{
+              paddingLeft: 5,
+            }}
+            to={`${anecdote.info}`}
+          >
+            ${anecdote.info}`
+          </Link>
+        </>
+      ) : (
+        <h2>{`anecdoted id '${id}' not found`}</h2>
+      )}
+    </>
+  );
+};
 
 const About = () => (
   <div>
@@ -51,7 +90,8 @@ const About = () => (
       more general than the brief tale itself, such as to characterize a person
       by delineating a specific quirk or trait, to communicate an abstract idea
       about a person, place, or thing through the concrete details of a short
-      narrative. An anecdote is "a story with a point."
+      eslint-disable-next-line react/no-unescaped-entities narrative. An
+      anecdote is "a story with a point."
     </em>
 
     <p>
@@ -62,7 +102,7 @@ const About = () => (
 );
 
 const Footer = () => (
-  <div>
+  <div style={{ paddingTop: 15 }}>
     Anecdote app for <a href="https://fullstackopen.com/">Full Stack Open</a>.
     See{" "}
     <a href="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js">
