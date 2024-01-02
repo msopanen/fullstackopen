@@ -1,4 +1,4 @@
-# Part 7 ultimate hooks
+# Part 7 country hook
 
 Routed anecdotes exercises 
 
@@ -9,7 +9,6 @@ Routed anecdotes exercises
 
 To launch frontend application run :
 - npm install
-- npm start server
-- npm run dev
+- npm start
 
-Go to address http://localhost:5173
+Go to address http://localhost:3000
