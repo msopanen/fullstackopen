@@ -133,6 +133,9 @@ const Footer = () => (
   </div>
 );
 
+// eslint-disable-next-line no-unused-vars
+const getInputProps = ({ reset, ...rest }) => rest;
+
 const CreateNew = (props) => {
   const content = useField("text");
   const author = useField("text");
@@ -163,15 +166,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...getInputProps(content)} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...getInputProps(author)} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...getInputProps(info)} />
         </div>
         <button>create</button>
         <button onClick={handleReset}>reset</button>
