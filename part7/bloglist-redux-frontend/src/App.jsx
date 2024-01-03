@@ -1,17 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import loginService from "./services/login";
-import blogService from "./services/blogs";
 import { useUser } from "./utils/useUser";
 import Notification from "./components/Notification";
 import CreateNewBlog from "./components/CreateNewBlog";
 import Togglable from "./components/Togglable";
-import sortBlogs from "./utils/blogSorter";
 import { setNotification } from "./reducers/notificationReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createBlog,
+  removeBlog,
+  initBlogs,
+  updateBlog,
+} from "./reducers/blogReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,10 +22,11 @@ const App = () => {
 
   const createFormRef = useRef();
 
+  const blogs = useSelector((state) => state.blog);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)));
+    dispatch(initBlogs());
   }, []);
 
   const handleLogin = async (e) => {
@@ -52,28 +56,17 @@ const App = () => {
 
   const handleCreate = async ({ title, author, url }) => {
     try {
-      const blog = await blogService.createBlog({
-        title: title,
-        author: author,
-        url: url,
-      });
-
-      // Add newly created blog to the list of the blogs
-      // NOTE: instead of relading all of the blogs we can use
-      // newly created blog object to concatenate it at the end
-      // on the blogs.
-      setBlogs((prevBlogs) => sortBlogs(prevBlogs.concat(blog)));
+      dispatch(
+        createBlog({
+          title: title,
+          author: author,
+          url: url,
+        }),
+      );
 
       dispatch(
         setNotification({
           message: `a new blog ${title} added`,
-        }),
-      );
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: "could not create new blog",
-          error: true,
         }),
       );
     } finally {
@@ -82,43 +75,11 @@ const App = () => {
   };
 
   const handleUpdate = async (updatedBlog) => {
-    try {
-      const blog = await blogService.updateBlog(updatedBlog.id, updatedBlog);
-      setBlogs((prevBlogs) =>
-        sortBlogs(
-          prevBlogs.map((r) =>
-            r.id === blog.id ? { ...r, likes: blog.likes } : r,
-          ),
-        ),
-      );
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: `could not update blog: ${error.message}`,
-          error: true,
-        }),
-      );
-    }
+    dispatch(updateBlog(updatedBlog));
   };
 
   const handleRemove = async (removedBlog) => {
-    try {
-      if (
-        window.confirm(`do you want to remove blog: ${removedBlog.title} ?`)
-      ) {
-        await blogService.deleteBlog(removedBlog.id);
-        setBlogs((prevBlogs) =>
-          prevBlogs.filter((r) => r.id !== removedBlog.id),
-        );
-      }
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: "could not delete blog",
-          error: true,
-        }),
-      );
-    }
+    dispatch(removeBlog(removedBlog));
   };
 
   const loginForm = () => {
