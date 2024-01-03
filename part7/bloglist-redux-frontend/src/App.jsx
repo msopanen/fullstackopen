@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
-import loginService from "./services/login";
-import { useUser } from "./utils/useUser";
 import Notification from "./components/Notification";
 import CreateNewBlog from "./components/CreateNewBlog";
 import Togglable from "./components/Togglable";
@@ -13,45 +11,37 @@ import {
   initBlogs,
   updateBlog,
 } from "./reducers/blogReducer";
+import { initUser, login, logout } from "./reducers/userReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [user, setUser, clearUser] = useUser();
-
   const createFormRef = useRef();
 
   const blogs = useSelector((state) => state.blog);
+  const user = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(initBlogs());
-  }, []);
+    dispatch(initUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(initBlogs());
+    }
+  }, [dispatch, user]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: "wrong username or password",
-          error: true,
-        }),
-      );
-    }
+    dispatch(login(username, password));
   };
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    clearUser();
+    dispatch(logout());
   };
 
   const handleCreate = async ({ title, author, url }) => {
