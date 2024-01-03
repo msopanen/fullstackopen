@@ -1,5 +1,8 @@
-const Notification = ({ notification }) => {
-  const { message, error = false } = notification;
+import { useSelector } from "react-redux";
+
+const Notification = () => {
+  //const { message, error = false } = notification;
+  const { message, error = false } = useSelector((state) => state.notification);
 
   const notificationStyle = {
     color: error ? "red" : "green",

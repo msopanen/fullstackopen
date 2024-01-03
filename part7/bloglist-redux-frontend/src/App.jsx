@@ -7,13 +7,11 @@ import Notification from "./components/Notification";
 import CreateNewBlog from "./components/CreateNewBlog";
 import Togglable from "./components/Togglable";
 import sortBlogs from "./utils/blogSorter";
+import { setNotification } from "./reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [notification, setNotification] = useState({
-    message: null,
-    error: false,
-  });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,14 +19,11 @@ const App = () => {
 
   const createFormRef = useRef();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)));
   }, []);
-
-  useEffect(() => {
-    const delay = setTimeout(() => setNotification({ message: null }), 5000);
-    return () => clearTimeout(delay);
-  }, [notification.message]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,10 +36,12 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (error) {
-      setNotification({
-        message: "wrong username or password",
-        error: true,
-      });
+      dispatch(
+        setNotification({
+          message: "wrong username or password",
+          error: true,
+        }),
+      );
     }
   };
 
@@ -67,14 +64,18 @@ const App = () => {
       // on the blogs.
       setBlogs((prevBlogs) => sortBlogs(prevBlogs.concat(blog)));
 
-      setNotification({
-        message: `a new blog ${title} added`,
-      });
+      dispatch(
+        setNotification({
+          message: `a new blog ${title} added`,
+        }),
+      );
     } catch (error) {
-      setNotification({
-        message: "could not create new blog",
-        error: true,
-      });
+      dispatch(
+        setNotification({
+          message: "could not create new blog",
+          error: true,
+        }),
+      );
     } finally {
       createFormRef.current.toggleVisibility();
     }
@@ -91,10 +92,12 @@ const App = () => {
         ),
       );
     } catch (error) {
-      setNotification({
-        message: `could not update blog: ${error.message}`,
-        error: true,
-      });
+      dispatch(
+        setNotification({
+          message: `could not update blog: ${error.message}`,
+          error: true,
+        }),
+      );
     }
   };
 
@@ -109,10 +112,12 @@ const App = () => {
         );
       }
     } catch (error) {
-      setNotification({
-        message: "could not delete blog",
-        error: true,
-      });
+      dispatch(
+        setNotification({
+          message: "could not delete blog",
+          error: true,
+        }),
+      );
     }
   };
 
@@ -120,7 +125,7 @@ const App = () => {
     return (
       <form onSubmit={handleLogin}>
         <h1>log in to application</h1>
-        <Notification notification={notification} />
+        <Notification />
         <div>
           username
           <input
@@ -159,7 +164,7 @@ const App = () => {
             </button>
           </h2>
           <h2>blogs</h2>
-          <Notification notification={notification} />
+          <Notification />
           {blogs.map((blog) => (
             <Blog
               key={blog.id}

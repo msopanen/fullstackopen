@@ -1,4 +1,4 @@
-# Part 7 Bloglist frontend
+# Part 7 Bloglist frontend redux version
 
 Bloglist exercises 
 
