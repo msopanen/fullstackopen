@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_VAULT } from "../utils/useUser";
+import { USER_VAULT } from "../reducers/loginReducer";
 const baseUrl = "/api/blogs";
 
 const getToken = () => {

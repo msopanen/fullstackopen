@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import loginService from "../services/login";
+import usersService from "../services/users";
 import { setNotification } from "./notificationReducer";
 
 const userSlice = createSlice({
@@ -9,49 +9,19 @@ const userSlice = createSlice({
     setUser(state, action) {
       return action.payload;
     },
-    clearUser() {
-      return null;
-    },
   },
 });
 
-export const USER_VAULT = "fi.fullstackopen.user";
-
-// Init
-// -----------------------------
-const getStoredUser = () => {
-  const stored = window.localStorage.getItem(USER_VAULT);
-  return JSON.parse(stored) || null;
-};
-
-export const initUser = () => {
-  return async (dispatch) => {
-    const user = getStoredUser();
-    dispatch(setUser(user));
-  };
-};
-
-// Login
-// -----------------------------
-const setStoredUser = (user) => {
-  window.localStorage.setItem(USER_VAULT, JSON.stringify(user));
-};
-
-export const login = (username, password) => {
+export const initUser = (id) => {
   return async (dispatch) => {
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      setStoredUser(user);
-
+      const user = await usersService.getUser(id);
       dispatch(setUser(user));
     } catch (error) {
+      console.log("ERRORII", { error });
       dispatch(
         setNotification({
-          message: "wrong username or password",
+          message: `could not load user: ${error.message}`,
           error: true,
         }),
       );
@@ -59,18 +29,5 @@ export const login = (username, password) => {
   };
 };
 
-// Logout
-// -----------------------------
-const removeStoredUser = () => {
-  window.localStorage.removeItem(USER_VAULT);
-};
-
-export const logout = () => {
-  return async (dispatch) => {
-    removeStoredUser();
-    dispatch(clearUser());
-  };
-};
-
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

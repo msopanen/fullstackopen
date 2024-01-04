@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { initUsers } from "../reducers/usersReducer";
+import Notification from "./Notification";
+import { Link } from "react-router-dom";
 
 const Users = ({ user }) => {
   const users = useSelector((state) => state.users);
@@ -14,6 +16,7 @@ const Users = ({ user }) => {
 
   return (
     <div>
+      <Notification />
       <h2>Users</h2>
       <table>
         <thead>
@@ -26,7 +29,9 @@ const Users = ({ user }) => {
           {users.map((user) => {
             return (
               <tr key={user.id}>
-                <td>{user.name}</td>
+                <td>
+                  <Link to={`${user.id}`}>{user.name}</Link>
+                </td>
                 <td>{user.blogs.length}</td>
               </tr>
             );

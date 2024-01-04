@@ -28,5 +28,6 @@ export const initUsers = () => {
     }
   };
 };
+
 export const { setUsers } = usersSlice.actions;
 export default usersSlice.reducer;
