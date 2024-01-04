@@ -1,11 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notification";
 import Blog from "./Blog";
-import { removeBlog, updateBlog } from "../reducers/blogReducer";
+import { createBlog, removeBlog, updateBlog } from "../reducers/blogReducer";
+import Togglable from "./Togglable";
+import CreateNewBlog from "./CreateNewBlog";
+import { setNotification } from "../reducers/notificationReducer";
+import { useRef } from "react";
 
 const Blogs = ({ user }) => {
   const blogs = useSelector((state) => state.blog);
 
+  const createFormRef = useRef();
   const dispatch = useDispatch();
 
   const handleUpdate = async (updatedBlog) => {
@@ -14,6 +19,26 @@ const Blogs = ({ user }) => {
 
   const handleRemove = async (removedBlog) => {
     dispatch(removeBlog(removedBlog));
+  };
+
+  const handleCreate = async ({ title, author, url }) => {
+    try {
+      dispatch(
+        createBlog({
+          title: title,
+          author: author,
+          url: url,
+        }),
+      );
+
+      dispatch(
+        setNotification({
+          message: `a new blog ${title} added`,
+        }),
+      );
+    } finally {
+      createFormRef.current.toggleVisibility();
+    }
   };
 
   return (
@@ -29,6 +54,9 @@ const Blogs = ({ user }) => {
           onRemove={handleRemove}
         />
       ))}
+      <Togglable btnLabel="create" ref={createFormRef}>
+        <CreateNewBlog onCreateNew={handleCreate} />
+      </Togglable>
     </>
   );
 };
