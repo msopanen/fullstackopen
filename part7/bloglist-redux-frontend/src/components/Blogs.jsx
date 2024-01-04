@@ -1,17 +1,28 @@
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notification";
 import Blog from "./Blog";
-import { createBlog, removeBlog, updateBlog } from "../reducers/blogReducer";
+import {
+  createBlog,
+  initBlogs,
+  removeBlog,
+  updateBlog,
+} from "../reducers/blogReducer";
 import Togglable from "./Togglable";
 import CreateNewBlog from "./CreateNewBlog";
 import { setNotification } from "../reducers/notificationReducer";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const Blogs = ({ user }) => {
   const blogs = useSelector((state) => state.blog);
 
   const createFormRef = useRef();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      dispatch(initBlogs());
+    }
+  }, [dispatch, user]);
 
   const handleUpdate = async (updatedBlog) => {
     dispatch(updateBlog(updatedBlog));
