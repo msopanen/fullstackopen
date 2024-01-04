@@ -37,6 +37,29 @@ blogsRouter.post(
   },
 );
 
+blogsRouter.post(
+  "/:id/comments",
+  authenticate,
+  userExtractor,
+  async (request, response, next) => {
+    const { id } = request.params;
+    const { comment } = request.body;
+    try {
+      const commentedBlog = await Blog.findById(id);
+      if (commentedBlog) {
+        commentedBlog.comments.push(comment);
+        await commentedBlog.save();
+
+        response.status(200).json(commentedBlog);
+      } else {
+        response.status(404).end();
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
 blogsRouter.put("/:id", async (request, response, next) => {
   const { id } = request.params;
   const { likes } = request.body;

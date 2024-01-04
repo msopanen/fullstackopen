@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const showRemoveBtn = (user, blog) => {
   const blogUserName = blog.user ? blog.user.username : "";
@@ -33,7 +34,9 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
 
   return (
     <div className="blog" style={blogStyle}>
-      {blog.title}
+      <Link data-test={"blog x"} to={`blogs/${blog.id}`}>
+        {blog.title}
+      </Link>
       <button id="details-toggle-button" onClick={toggleDetails}>
         {showDetails ? "hide" : "show"}
       </button>

@@ -10,6 +10,15 @@ const User = () => {
 
   const { id } = useParams();
 
+  // In case of the single user separate BE endpoint and
+  // reducer is created to find user by id. This is more
+  // optimal way compared to BlogComments where all blogs
+  // are used to find single blog with comments.
+  // NOTE: Witout initUser and BE query to load single user
+  // data route users/:id doesn't work when browser is refreshed
+  // because store doesn't have user data after refresh.
+  // Thus most optimal way to load data is to implement BE
+  // endpoint with id.
   useEffect(() => {
     if (id) {
       dispatch(initUser(id));

@@ -18,7 +18,6 @@ export const initUser = (id) => {
       const user = await usersService.getUser(id);
       dispatch(setUser(user));
     } catch (error) {
-      console.log("ERRORII", { error });
       dispatch(
         setNotification({
           message: `could not load user: ${error.message}`,

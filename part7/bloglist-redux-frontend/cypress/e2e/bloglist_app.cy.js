@@ -125,36 +125,36 @@ describe("blog app", function () {
 
     it("sorts blogs according to likes", function () {
       cy.createBlog({
-        title: "blog a",
+        title: "blog_a",
         author: "Cypress Tester",
         url: "https://blogs-test-url",
         likes: 1,
       });
 
       cy.createBlog({
-        title: "blog b",
+        title: "blog_b",
         author: "Cypress Tester",
         url: "https://blogs-test-url",
         likes: 0,
       });
       // Verify initial expected sort
-      cy.get(".blog").eq(0).should("contain", "blog a");
-      cy.get(".blog").eq(1).should("contain", "blog b");
+      cy.get(".blog").eq(0).should("contain", "blog_a");
+      cy.get(".blog").eq(1).should("contain", "blog_b");
 
-      cy.contains("blog b").as("blogB");
+      cy.get(".blog").eq(1).should("contain", "blog_b").as("blogB");
 
       cy.get("@blogB").find("#details-toggle-button").click();
       cy.get("@blogB").find("#like-button").as("blogBLikeButton");
 
       cy.get("@blogBLikeButton").click();
       // Verify when likes are equal
-      cy.get(".blog").eq(0).should("contain", "blog a");
-      cy.get(".blog").eq(1).should("contain", "blog b");
+      cy.get(".blog").eq(0).should("contain", "blog_a");
+      cy.get(".blog").eq(1).should("contain", "blog_b");
 
       cy.get("@blogBLikeButton").click();
       // Verify when b has more likes
-      cy.get(".blog").eq(0).should("contain", "blog b");
-      cy.get(".blog").eq(1).should("contain", "blog a");
+      cy.get(".blog").eq(0).should("contain", "blog_b");
+      cy.get(".blog").eq(1).should("contain", "blog_a");
     });
   });
 });

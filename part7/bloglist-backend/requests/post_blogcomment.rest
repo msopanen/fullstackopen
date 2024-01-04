@@ -1,11 +1,7 @@
-POST http://localhost:3001/api/blogs
+POST http://localhost:3001/api/blogs/6596c8f439246e472d8b8f1a/comments
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF2aXJ0YW5lbiIsImlkIjoiNjU3NzRhMzk1MzY4ODBlNzFhNjg0Nzc2IiwiaWF0IjoxNzA0MzgwNTk1LCJleHAiOjE3MDQzODQxOTV9.qYFI-KOrOHQukaojARfuwBgemSj0Lb2wQAMk0SDKpCU
 
 {
-    "title": "Sotaromaani",
-    "author": "Artturi Iivari Virtanen",
-    "url": "https://xyz",
-    "likes": 5,
-    "comments": ["joo on hyvä"]
+    "comment": "mahoton"
 }
