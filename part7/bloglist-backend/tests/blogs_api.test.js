@@ -68,6 +68,7 @@ describe("with initial blogs in DB", () => {
         ...payload,
         user: expect.anything(),
         id: expect.any(String),
+        comments: [],
       });
     });
 
@@ -98,6 +99,7 @@ describe("with initial blogs in DB", () => {
         likes: 0,
         user: expect.anything(),
         id: expect.any(String),
+        comments: [],
       });
     });
 
