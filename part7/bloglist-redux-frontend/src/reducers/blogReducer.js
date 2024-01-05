@@ -4,8 +4,11 @@ import { setNotification } from "./notificationReducer";
 
 const sortFn = (a, b) => b.likes - a.likes;
 
-const updateFn = (blog) => (r) =>
+const updateVoteFn = (blog) => (r) =>
   r.id === blog.id ? { ...r, likes: blog.likes } : r;
+
+const updateCommentFn = (blog) => (r) =>
+  r.id === blog.id ? { ...r, comments: blog.comments } : r;
 
 const initialState = [];
 
@@ -20,10 +23,13 @@ const blogSlice = createSlice({
       state.push(action.payload);
     },
     voteBlog(state, action) {
-      return state.map(updateFn(action.payload)).sort(sortFn);
+      return state.map(updateVoteFn(action.payload)).sort(sortFn);
     },
     deleteBlog(state, action) {
       return state.filter((r) => r.id !== action.payload.id);
+    },
+    setComments(state, action) {
+      return state.map(updateCommentFn(action.payload));
     },
   },
 });
@@ -83,5 +89,22 @@ export const removeBlog = (blog) => {
   };
 };
 
-export const { setBlogs, addBlog, voteBlog, deleteBlog } = blogSlice.actions;
+export const commentBlog = (id, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentedBlog = await blogService.commentBlog(id, comment);
+      dispatch(setComments(commentedBlog));
+    } catch (error) {
+      dispatch(
+        setNotification({
+          message: "could not create new blog",
+          error: true,
+        }),
+      );
+    }
+  };
+};
+
+export const { setBlogs, addBlog, voteBlog, deleteBlog, setComments } =
+  blogSlice.actions;
 export default blogSlice.reducer;

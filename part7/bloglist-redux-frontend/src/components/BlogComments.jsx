@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { initBlogs, updateBlog } from "../reducers/blogReducer";
+import { commentBlog, initBlogs, updateBlog } from "../reducers/blogReducer";
+import { useField } from "../hooks";
 
 const BlogComments = () => {
   const { id } = useParams();
   const blog = useSelector((state) => state.blog.find((r) => r.id === id));
+
+  const comment = useField("text");
 
   const dispatch = useDispatch();
 
@@ -29,6 +32,10 @@ const BlogComments = () => {
     dispatch(updateBlog(likedBlog));
   };
 
+  const handleAddComment = () => {
+    dispatch(commentBlog(blog.id, comment.value));
+  };
+
   return (
     <>
       {blog ? (
@@ -40,6 +47,10 @@ const BlogComments = () => {
           <br />
           added by {blog.user.name}
           <h3>Comments</h3>
+          <div>
+            <input {...comment} />
+            <button onClick={handleAddComment}>add comment</button>
+          </div>
           <ul>
             {blog.comments.map((comment, i) => (
               <li key={i}>{comment}</li>
