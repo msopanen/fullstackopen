@@ -3,6 +3,15 @@ import { initUser } from "../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Notification from "./Notification";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import { Circle } from "@mui/icons-material";
 
 const User = () => {
   const userData = useSelector((state) => state.userData);
@@ -30,13 +39,27 @@ const User = () => {
       <Notification />
       {userData ? (
         <div>
-          <h2>{userData.name}</h2>
-          <h3>added blogs</h3>
-          <ul>
-            {userData.blogs.map((r) => (
-              <li key={r.id}>{r.title}</li>
-            ))}
-          </ul>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+            {userData.name}
+          </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            added blogs
+          </Typography>
+
+          <Box
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
+            <List>
+              {userData.blogs.map((r) => (
+                <ListItem key={r.id} disablePadding>
+                  <ListItemIcon>
+                    <Circle sx={{ width: 10 }} />
+                  </ListItemIcon>
+                  <ListItemText primary={r.title} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </div>
       ) : (
         <div>{`could not load blogs for id: ${id}`}</div>

@@ -1,8 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+  Link,
+  Paper,
+  TableHead,
+} from "@mui/material";
 import { initUsers } from "../reducers/usersReducer";
 import Notification from "./Notification";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const Users = ({ user }) => {
   const users = useSelector((state) => state.users);
@@ -17,27 +28,32 @@ const Users = ({ user }) => {
   return (
     <div>
       <Notification />
-      <h2>Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => {
-            return (
-              <tr key={user.id}>
-                <td>
-                  <Link to={`${user.id}`}>{user.name}</Link>
-                </td>
-                <td>{user.blogs.length}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        Users
+      </Typography>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Blogs</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell key={user.id}>
+                  <Link component={RouterLink} to={`${user.id}`}>
+                    {user.name}
+                  </Link>
+                </TableCell>
+                <TableCell>{user.blogs.length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

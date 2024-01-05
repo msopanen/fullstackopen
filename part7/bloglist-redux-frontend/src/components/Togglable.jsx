@@ -21,7 +21,7 @@ const Togglable = forwardRef((props, ref) => {
   const btnId = `${props.btnLabel}-toggle-button`;
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <div style={hideIfVisible}>
         <Button variant="contained" id={btnId} onClick={toggleVisibility}>
           {props.btnLabel}

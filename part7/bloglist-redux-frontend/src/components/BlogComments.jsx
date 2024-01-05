@@ -1,8 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { commentBlog, initBlogs, updateBlog } from "../reducers/blogReducer";
 import { useField } from "../hooks";
+import {
+  Button,
+  TextField,
+  Typography,
+  Link,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from "@mui/material";
+import { Circle } from "@mui/icons-material";
 
 const BlogComments = () => {
   const { id } = useParams();
@@ -40,22 +52,41 @@ const BlogComments = () => {
     <>
       {blog ? (
         <>
-          <h2>{blog.title}</h2>
-          <Link to={blog.url}>{blog.url}</Link>
-          <br />
-          {blog.likes} likes<button onClick={handleLike}>Like</button>
-          <br />
-          added by {blog.user.name}
-          <h3>Comments</h3>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+            {blog.title}
+          </Typography>
+          <Link component={RouterLink} to={blog.url}>
+            {blog.url}
+          </Link>
           <div>
-            <input {...comment} />
-            <button onClick={handleAddComment}>add comment</button>
+            {blog.likes} likes<Button onClick={handleLike}>Like</Button>
           </div>
-          <ul>
-            {blog.comments.map((comment, i) => (
-              <li key={i}>{comment}</li>
-            ))}
-          </ul>
+          <div>added by {blog.user.name}</div>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Comments
+          </Typography>
+          <div>
+            <TextField label="Comment" margin="normal" {...comment} />
+          </div>
+          <div>
+            <Button variant="contained" onClick={handleAddComment}>
+              add comment
+            </Button>
+          </div>
+          <Box
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
+            <List>
+              {blog.comments.map((comment, i) => (
+                <ListItem key={i} disablePadding>
+                  <ListItemIcon>
+                    <Circle sx={{ width: 10 }} />
+                  </ListItemIcon>
+                  <ListItemText primary={comment} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </>
       ) : null}
     </>

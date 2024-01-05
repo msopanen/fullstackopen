@@ -11,7 +11,7 @@ const CreateNewBlog = ({ onCreateNew }) => {
   };
 
   return (
-    <div>
+    <div style={{ display: "contents" }}>
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
         Create new blog
       </Typography>

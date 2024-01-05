@@ -21,7 +21,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container xs={{ display: "flex" }}>
       {user ? (
         <>
           <Router>

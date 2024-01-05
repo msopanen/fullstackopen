@@ -27,14 +27,8 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
     onRemove(blog);
   };
 
-  const blogStyle = {
-    border: "solid",
-    margin: "0.125rem",
-    padding: "0.125rem",
-  };
-
   return (
-    <div className="blog" style={blogStyle}>
+    <div className="blog">
       <Link data-test={"blog x"} to={`blogs/${blog.id}`}>
         {blog.title}
       </Link>
@@ -55,9 +49,9 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
       )}
       <br />
       {showRemoveBtn(loggedUser, blog) && (
-        <button id="remove-button" onClick={handleRemove}>
+        <Button id="remove-button" onClick={handleRemove}>
           remove
-        </button>
+        </Button>
       )}
     </div>
   );
