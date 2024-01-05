@@ -1,46 +1,65 @@
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/loginReducer";
-import { useState } from "react";
 import Notification from "./Notification";
+import { useField } from "../hooks";
+import {
+  AppBar,
+  Button,
+  TextField,
+  Toolbar,
+  Typography,
+  Box,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const username = useField("text");
+  const password = useField("password");
 
   const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(login(username, password));
+    dispatch(login(username.value, password.value));
   };
 
   return (
     <form onSubmit={handleLogin}>
-      <h1>log in to application</h1>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <MenuIcon />
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Log in to application
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <Notification />
       <div>
-        username
-        <input
+        <TextField
           id="username-input"
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+          label="username"
+          margin="normal"
+          {...username}
         />
       </div>
       <div>
-        password
-        <input
+        <TextField
           id="password-input"
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
+          label="password"
+          margin="normal"
+          {...password}
         />
       </div>
-      <button id="login-button" type="submit">
+      <Button
+        variant="contained"
+        id="login-button"
+        color="inherit"
+        type="submit"
+      >
         login
-      </button>
+      </Button>
     </form>
   );
 };

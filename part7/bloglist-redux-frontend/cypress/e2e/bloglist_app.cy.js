@@ -20,12 +20,12 @@ describe("blog app", function () {
   describe("when not logged in", function () {
     it("login form is shown", function () {
       cy.visit("");
-      cy.contains("log in to application");
+      cy.contains("Log in to application");
     });
 
     describe("login", function () {
       it("succeeds with correct credentials", function () {
-        cy.contains("log in to application").click();
+        cy.contains("Log in to application").click();
         cy.get("#username-input").type("atester");
         cy.get("#password-input").type("s3cr3t");
         cy.get("#login-button").click();
@@ -34,15 +34,15 @@ describe("blog app", function () {
       });
 
       it("fails with wrong credentials", function () {
-        cy.contains("log in to application").click();
+        cy.contains("Log in to application").click();
         cy.get("#username-input").type("atester");
         cy.get("#password-input").type("wrong-password");
         cy.get("#login-button").click();
 
         // Verify notification
         cy.get(".notification").should("contain", "wrong username or password");
-        cy.get(".notification").should("have.css", "color", "rgb(255, 0, 0)");
-        cy.get(".notification").should("have.css", "border-style", "solid");
+        cy.get(".notification").should("have.css", "color", "rgb(95, 33, 32)");
+        cy.get(".notification").should("have.css", "border-style", "none");
 
         cy.contains("Cypress Tester A logged in").should("not.exist");
       });
@@ -68,8 +68,8 @@ describe("blog app", function () {
         "contain",
         "a new blog cypress testing added",
       );
-      cy.get(".notification").should("have.css", "color", "rgb(0, 128, 0)");
-      cy.get(".notification").should("have.css", "border-style", "solid");
+      cy.get(".notification").should("have.css", "color", "rgb(30, 70, 32)");
+      cy.get(".notification").should("have.css", "border-style", "none");
       // Verify blog list
       cy.contains("cypress testing");
     });

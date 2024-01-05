@@ -11,6 +11,7 @@ import Togglable from "./Togglable";
 import CreateNewBlog from "./CreateNewBlog";
 import { setNotification } from "../reducers/notificationReducer";
 import { useEffect, useRef } from "react";
+import { Typography } from "@mui/material";
 
 const Blogs = ({ user }) => {
   const blogs = useSelector((state) => state.blog);
@@ -54,8 +55,10 @@ const Blogs = ({ user }) => {
 
   return (
     <>
-      <h2>blogs</h2>
       <Notification />
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        Blogs
+      </Typography>
       {blogs.map((blog) => (
         <Blog
           key={blog.id}

@@ -1,53 +1,53 @@
-import { useState } from "react";
+import { Button, TextField, Typography } from "@mui/material";
+import { useField } from "../hooks";
 
 const CreateNewBlog = ({ onCreateNew }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const title = useField("text");
+  const author = useField("text");
+  const url = useField("text");
 
   const handleCreateNew = () => {
-    onCreateNew({ title, author, url });
-    setTitle("");
-    setAuthor("");
-    setUrl("");
+    onCreateNew({ title: title.value, author: author.value, url: url.value });
   };
 
   return (
     <div>
-      <h2>create new</h2>
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        Create new blog
+      </Typography>
       <div>
-        title:
-        <input
-          type="text"
-          value={title}
-          name="title"
-          onChange={({ target }) => setTitle(target.value)}
+        <TextField
+          label="Blog title"
           placeholder="blog title"
+          margin="normal"
+          {...title}
         />
       </div>
       <div>
-        author:
-        <input
-          type="text"
-          value={author}
-          name="author"
-          onChange={({ target }) => setAuthor(target.value)}
+        <TextField
+          label="Blog author"
           placeholder="blog author"
+          margin="normal"
+          {...author}
         />
       </div>
       <div>
-        url:
-        <input
-          type="text"
-          value={url}
-          name="url"
-          onChange={({ target }) => setUrl(target.value)}
+        <TextField
+          label="Blog url"
           placeholder="blog url"
+          margin="normal"
+          {...url}
         />
       </div>
-      <button id="create-blog-button" onClick={handleCreateNew} type="button">
+
+      <Button
+        color="inherit"
+        id="create-blog-button"
+        variant="contained"
+        onClick={handleCreateNew}
+      >
         create
-      </button>
+      </Button>
     </div>
   );
 };

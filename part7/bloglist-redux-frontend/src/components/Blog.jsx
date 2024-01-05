@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const showRemoveBtn = (user, blog) => {
   const blogUserName = blog.user ? blog.user.username : "";
@@ -37,17 +38,17 @@ const Blog = ({ blog, loggedUser, onUpdate, onRemove }) => {
       <Link data-test={"blog x"} to={`blogs/${blog.id}`}>
         {blog.title}
       </Link>
-      <button id="details-toggle-button" onClick={toggleDetails}>
+      <Button id="details-toggle-button" onClick={toggleDetails}>
         {showDetails ? "hide" : "show"}
-      </button>
+      </Button>
       {showDetails && (
         <div>
           {blog.url}
           <br />
           likes: {blog.likes}{" "}
-          <button id="like-button" onClick={handleLike}>
+          <Button id="like-button" onClick={handleLike}>
             like
-          </button>
+          </Button>
           <br />
           {blog.author}
         </div>

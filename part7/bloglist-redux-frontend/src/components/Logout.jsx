@@ -1,14 +1,11 @@
 import { useDispatch } from "react-redux";
 import { logout } from "../reducers/loginReducer";
+import { Button } from "@mui/material";
 
 const logoutStyle = {
   display: "flex",
   alignItems: "center",
   padding: ".25rem",
-};
-
-const labelStyle = {
-  paddingRight: ".25rem",
 };
 
 const Logout = ({ user }) => {
@@ -21,10 +18,10 @@ const Logout = ({ user }) => {
 
   return (
     <div style={logoutStyle}>
-      <div style={labelStyle}>{user.name} logged in</div>
-      <button onClick={handleLogout} type="button">
+      <div>{user.name} logged in</div>
+      <Button color="inherit" onClick={handleLogout}>
         logout
-      </button>
+      </Button>
     </div>
   );
 };
