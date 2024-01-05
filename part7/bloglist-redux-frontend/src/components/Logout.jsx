@@ -1,6 +1,16 @@
 import { useDispatch } from "react-redux";
 import { logout } from "../reducers/loginReducer";
 
+const logoutStyle = {
+  display: "flex",
+  alignItems: "center",
+  padding: ".25rem",
+};
+
+const labelStyle = {
+  paddingRight: ".25rem",
+};
+
 const Logout = ({ user }) => {
   const dispatch = useDispatch();
 
@@ -10,14 +20,12 @@ const Logout = ({ user }) => {
   };
 
   return (
-    <>
-      <h2>
-        {user.name} logged in
-        <button onClick={handleLogout} type="button">
-          logout
-        </button>
-      </h2>
-    </>
+    <div style={logoutStyle}>
+      <div style={labelStyle}>{user.name} logged in</div>
+      <button onClick={handleLogout} type="button">
+        logout
+      </button>
+    </div>
   );
 };
 

@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import Blog from "./Blog";
 
@@ -13,18 +14,22 @@ describe("Blog", () => {
     user: {
       username: "testauthor",
     },
+    comments: [],
   };
 
   const noOp = () => {};
 
   test("renders only title by default", () => {
     render(
-      <Blog
-        blog={mockBlog}
-        loggedUser={mockUser}
-        onUpdate={noOp}
-        onRemove={noOp}
-      />,
+      <Router>
+        <Blog
+          blog={mockBlog}
+          loggedUser={mockUser}
+          onUpdate={noOp}
+          onRemove={noOp}
+        />
+        ,
+      </Router>,
     );
 
     const title = screen.getByText("TestTitle");
@@ -43,12 +48,15 @@ describe("Blog", () => {
   test("renders all data after show button press", async () => {
     const user = userEvent.setup();
     render(
-      <Blog
-        blog={mockBlog}
-        loggedUser={mockUser}
-        onUpdate={noOp}
-        onRemove={noOp}
-      />,
+      <Router>
+        <Blog
+          blog={mockBlog}
+          loggedUser={mockUser}
+          onUpdate={noOp}
+          onRemove={noOp}
+        />
+        ,
+      </Router>,
     );
 
     const title = screen.getByText("TestTitle");
@@ -72,12 +80,15 @@ describe("Blog", () => {
     const updateSpy = jest.fn();
 
     render(
-      <Blog
-        blog={mockBlog}
-        loggedUser={mockUser}
-        onUpdate={updateSpy}
-        onRemove={noOp}
-      />,
+      <Router>
+        <Blog
+          blog={mockBlog}
+          loggedUser={mockUser}
+          onUpdate={updateSpy}
+          onRemove={noOp}
+        />
+        ,
+      </Router>,
     );
 
     const showBtn = screen.getByText("show");
