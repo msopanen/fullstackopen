@@ -12,8 +12,30 @@ export const parseNumberArgs = (args: string[], argsCount: number): number[] => 
 
 export const assertNumber = (arg: unknown): number => {
     const num = Number(arg);
-    if(arg === "" || isNaN(num)) {
+    
+    if(arg === "") {
+        throw new Error("parameters missing");
+    }
+    
+    if(isNaN(num)) {
         throw new Error("malformatted parameters");
     }
+
     return num;
+};
+
+export const assertNumberArray = (args: string[]): number[] => {
+    if(!args) {
+        throw new Error('parameters missing');
+    }
+
+    const numbers: number[] = [];
+    for(let i=0; i < args.length; i++) {
+        if(isNaN(Number(args[i]))) {
+            throw new Error('malformatted parameters');
+        } else {
+            numbers.push(Number(args[i]));
+        }
+    }
+    return numbers;
 };

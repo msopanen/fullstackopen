@@ -1,5 +1,3 @@
-import { parseNumberArgs } from "./utils";
-
 interface ExercisePeriodRating {
     periodLength: number;
     trainingDays: number;
@@ -10,19 +8,19 @@ interface ExercisePeriodRating {
     average: number;
 }
 
-const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriodRating => {
+export const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriodRating => {
     
     const periodLength = days.length;
     const trainingDays = days.filter(h => h > 0).length;
     const totalTraining = days.reduce((acc, h) => (acc += h), 0);
-    const average = totalTraining / periodLength;
+    const average = periodLength ? totalTraining / periodLength : 0;
 
     let rating;
     let ratingDescription;
 
     if(average < (target / 2)) {
         rating = 1;
-        ratingDescription = "oh no";
+        ratingDescription = "bad";
     } else if(average >= target) {
         rating = 3;
         ratingDescription = "awesome, you reached your target";
@@ -43,12 +41,3 @@ const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriod
         average,
     };
 };
-
-try {
-    const args = parseNumberArgs(process.argv, process.argv.length);
-    const target = args.shift() || 0;
-    console.log(getExercisePeriodRating(target, args));
-} catch (error: unknown) {
-    console.log(error instanceof Error ? 
-        `Error: ${error.message}` : "Unknown error"); 
-}

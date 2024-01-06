@@ -4,8 +4,8 @@
   "description": "calculator exercises",
   "main": "index.js",
   "scripts": {
-    "calculateBmi": "ts-node ./bmiCalculator.ts",
-    "calculateExercise": "ts-node ./exerciseCalculator.ts",
+    "calculateBmi": "ts-node ./bmiMain.ts",
+    "calculateExercise": "ts-node ./exerciseMain.ts",
     "dev": "ts-node-dev index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .ts ."
