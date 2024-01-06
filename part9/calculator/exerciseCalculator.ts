@@ -1,3 +1,5 @@
+import { parseNumberArgs } from "./utils";
+
 interface ExercisePeriodRating {
     periodLength: number;
     trainingDays: number;
@@ -42,4 +44,10 @@ const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriod
     }
 }
 
-console.log(getExercisePeriodRating(2, [3, 0, 2, 4.5, 0, 3, 1]))
+try {
+    const args = parseNumberArgs(process.argv, process.argv.length);
+    console.log(getExercisePeriodRating(args.shift(), args))
+} catch (error: unknown) {
+    console.log(error instanceof Error ? 
+        `Error: ${error.message}` : "Unknown error"); 
+}
