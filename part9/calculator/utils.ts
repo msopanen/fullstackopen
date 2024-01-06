@@ -9,3 +9,11 @@ export const parseNumberArgs = (args: string[], argsCount: number): number[] => 
     }
     return numbers;
 }
+
+export const assertNumber = (arg: any): number => {
+    const num = Number(arg)
+    if(arg === "" || isNaN(num)) {
+        throw new Error("malformatted parameters")
+    }
+    return num;
+}
