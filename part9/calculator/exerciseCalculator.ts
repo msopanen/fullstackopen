@@ -14,7 +14,7 @@ const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriod
     
     const periodLength = days.length;
     const trainingDays = days.filter(h => h > 0).length;
-    const totalTraining = days.reduce((acc, h) => (acc += h), 0)
+    const totalTraining = days.reduce((acc, h) => (acc += h), 0);
     const average = totalTraining / periodLength;
 
     let rating;
@@ -22,13 +22,13 @@ const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriod
 
     if(average < (target / 2)) {
         rating = 1;
-        ratingDescription = "oh no"
+        ratingDescription = "oh no";
     } else if(average >= target) {
-        rating = 3
-        ratingDescription = "awesome, you reached your target"
+        rating = 3;
+        ratingDescription = "awesome, you reached your target";
     } else {
         rating = 2;
-        ratingDescription = "not too bad but could be better"
+        ratingDescription = "not too bad but could be better";
     }
 
     const success = average >= target;
@@ -41,12 +41,13 @@ const getExercisePeriodRating = (target: number, days: number[]): ExercisePeriod
         ratingDescription,
         target,
         average,
-    }
-}
+    };
+};
 
 try {
     const args = parseNumberArgs(process.argv, process.argv.length);
-    console.log(getExercisePeriodRating(args.shift(), args))
+    const target = args.shift() || 0;
+    console.log(getExercisePeriodRating(target, args));
 } catch (error: unknown) {
     console.log(error instanceof Error ? 
         `Error: ${error.message}` : "Unknown error"); 

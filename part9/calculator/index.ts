@@ -15,8 +15,10 @@ app.get('/bmi',(req: Request, res: Response) => {
     res.json({
       height, weight, bmi: calculateBmi(height, weight)
     });
-  } catch (error) {
-    res.status(400).json({ error: error.message});
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error 
+      ? error.message : "Unknown error";
+    res.status(400).json({ error: errorMessage});
   }
 });
 
