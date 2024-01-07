@@ -14,7 +14,6 @@ export const getPatients = (): NonSensitivePatient[] => {
 };
 
 const addPatient = (newPatient: NewPatient) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const id: string = uuid();
   data.push({ ...newPatient, id });
   return newPatient;
