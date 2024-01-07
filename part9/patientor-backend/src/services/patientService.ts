@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { v1 as uuid } from "uuid";
 import data from "../../data/patients";
 import { NonSensitivePatient, NewPatient } from "../types";
