@@ -24,6 +24,29 @@ app.get('/bmi',(req: Request, res: Response) => {
   }
 });
 
+// Way to type express req with custom body
+/*interface ExercisesBody {
+  daily_exercises: number[],
+  target: number
+}
+
+interface ExercisesRequest extends Request {
+  body: ExercisesBody;
+}
+
+app.post('/exercises',(req: ExercisesRequest, res: Response) => {
+  try {
+    const target = assertNumber(req.body.target);
+    const dailyExecrices = assertNumberArray(req.body.daily_exercises);
+
+    res.json(getExercisePeriodRating(target, dailyExecrices));
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error 
+      ? error.message : "Unknown error";
+    res.status(400).json({ error: errorMessage});
+  }
+});*/
+
 app.post('/exercises',(req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

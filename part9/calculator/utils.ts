@@ -24,7 +24,7 @@ export const assertNumber = (arg: unknown): number => {
     return num;
 };
 
-export const assertNumberArray = (args: string[]): number[] => {
+export const assertNumberArray = (args: number[]): number[] => {
     if(!args) {
         throw new Error('parameters missing');
     }
