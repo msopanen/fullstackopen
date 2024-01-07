@@ -4,7 +4,6 @@ const toNewPatient = (obj: unknown): NewPatient => {
   if (!obj || typeof obj !== "object") {
     throw new Error("Incorrect or missing data");
   }
-  console.log({ obj });
   if (
     "name" in obj &&
     "ssn" in obj &&
