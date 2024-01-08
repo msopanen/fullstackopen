@@ -14,9 +14,9 @@ const App = () => {
   return (
     <div>
       <h2>Diary entries</h2>
-      {diaries.map((d, i) => {
+      {diaries.map((d) => {
         return (
-          <div key={i}>
+          <div key={d.id}>
             <b>{d.date}</b>
             <p>
               weather: {d.weather}
