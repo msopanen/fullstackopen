@@ -9,7 +9,7 @@ const getAll = async () => {
 };
 
 const addDiary = async (entry: NewDiaryEntry) => {
-  const { data } = await axios.post<NewDiaryEntry>(baseUrl, entry);
+  const { data } = await axios.post<DiaryEntry>(baseUrl, entry);
   return data;
 };
 

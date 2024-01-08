@@ -1,22 +1,7 @@
 import { useEffect, useState } from "react";
 import diaryService from "./services/flightDiary";
-import { DiaryEntry, NewDiaryEntry } from "./types";
-
-const toNewDiaryEntry = (e: React.SyntheticEvent): NewDiaryEntry => {
-  const target = e.target as typeof e.target & {
-    date: { value: string };
-    visibility: { value: string };
-    weather: { value: string };
-    comment: { value: string };
-  };
-
-  return {
-    date: target.date.value,
-    visibility: target.visibility.value,
-    weather: target.weather.value,
-    comment: target.comment.value,
-  };
-};
+import { DiaryEntry } from "./types";
+import { toNewDiaryEntry } from "./utils";
 
 const App = () => {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
@@ -27,10 +12,11 @@ const App = () => {
     });
   }, []);
 
-  const add = (e: React.SyntheticEvent) => {
+  const add = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const newEntry = toNewDiaryEntry(e);
-    diaryService.addDiary(newEntry);
+    diaryService
+      .addDiary(toNewDiaryEntry(e))
+      .then((diary) => setDiaries((prev) => prev.concat(diary)));
   };
 
   return (
