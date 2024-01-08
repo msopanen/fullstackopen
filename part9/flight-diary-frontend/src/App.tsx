@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import diaryService from "./services/flightDiary";
+import diaryService from "./services/diaryService";
 import { DiaryEntry, Visibility, Weather } from "./types";
 import { toNewDiaryEntry } from "./utils";
 
