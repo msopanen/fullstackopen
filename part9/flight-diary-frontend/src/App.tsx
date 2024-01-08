@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import diaryService from "./services/flightDiary";
-import { DiaryEntry } from "./types";
+import { DiaryEntry, Visibility, Weather } from "./types";
 import { toNewDiaryEntry } from "./utils";
 
 const App = () => {
@@ -39,13 +39,37 @@ const App = () => {
       <form onSubmit={add}>
         <div>
           date
-          <input name="date" />
+          <input name="date" type="date" />
           <br />
-          visibility
-          <input name="visibility" />
+          visibility great
+          <input
+            name="visibility"
+            value={Visibility.Great}
+            type="radio"
+            defaultChecked={true}
+          />
+          good
+          <input name="visibility" value={Visibility.Good} type="radio" />
+          ok
+          <input name="visibility" value={Visibility.Ok} type="radio" />
+          poor
+          <input name="visibility" value={Visibility.Poor} type="radio" />
           <br />
-          weather
-          <input name="weather" />
+          weather sunny
+          <input
+            name="weather"
+            value={Weather.Sunny}
+            type="radio"
+            defaultChecked={true}
+          />
+          cloudy
+          <input name="weather" value={Weather.Cloudy} type="radio" />
+          rainy
+          <input name="weather" value={Weather.Rainy} type="radio" />
+          windy
+          <input name="weather" value={Weather.Windy} type="radio" />
+          stormy
+          <input name="weather" value={Weather.Stormy} type="radio" />
           <br />
           comment
           <input name="comment" />
