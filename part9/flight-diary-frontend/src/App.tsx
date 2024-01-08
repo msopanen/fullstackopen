@@ -5,6 +5,7 @@ import { toNewDiaryEntry } from "./utils";
 
 const App = () => {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     diaryService.getAll().then((data) => {
@@ -12,16 +13,29 @@ const App = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (error.length > 0) {
+      const timeout = setTimeout(() => setError(""), 3000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [error]);
+
   const add = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     diaryService
       .addDiary(toNewDiaryEntry(e))
-      .then((diary) => setDiaries((prev) => prev.concat(diary)));
+      .then((diary) => setDiaries((prev) => prev.concat(diary)))
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   return (
     <div>
       <h2>Add new entry</h2>
+      {error.length > 0 && <div style={{ color: "red" }}>{error}</div>}
       <form onSubmit={add}>
         <div>
           date
