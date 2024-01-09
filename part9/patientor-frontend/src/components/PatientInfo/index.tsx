@@ -7,7 +7,7 @@ import { Patient } from "../../types";
 
 import patientService from "../../services/patients";
 import GenderIcon from "./GenderIcon";
-import DiagnosisCodesList from "./DiagnosisCodesList";
+import DiagnosisList from "./DiagnosisList";
 
 const PatientInfo = () => {
     
@@ -41,9 +41,9 @@ const PatientInfo = () => {
             </Typography>
             <div>{patient.entries.map(e => { 
                 return (
-                    <div>
+                    <div key={e.id}>
                         <span>{e.date} {e.description}</span>
-                        <DiagnosisCodesList codes={e.diagnosisCodes} />
+                        <DiagnosisList codes={e.diagnosisCodes} />
                     </div>
                 );
                 })}
