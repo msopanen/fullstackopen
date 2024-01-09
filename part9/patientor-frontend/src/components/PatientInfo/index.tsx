@@ -7,6 +7,7 @@ import { Patient } from "../../types";
 
 import patientService from "../../services/patients";
 import GenderIcon from "./GenderIcon";
+import DiagnosisCodesList from "./DiagnosisCodesList";
 
 const PatientInfo = () => {
     
@@ -35,6 +36,18 @@ const PatientInfo = () => {
             </Stack>
             <div>ssn: {patient.ssn}</div>
             <div>occupation: {patient.occupation}</div>
+            <Typography variant="h6" component="div" sx={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
+                    entries
+            </Typography>
+            <div>{patient.entries.map(e => { 
+                return (
+                    <div>
+                        <span>{e.date} {e.description}</span>
+                        <DiagnosisCodesList codes={e.diagnosisCodes} />
+                    </div>
+                );
+                })}
+            </div>
         </div>
     )}</>);
 };
