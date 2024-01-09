@@ -8,11 +8,13 @@ interface HealthCheckEntryProps {
     entry: HealthCheckEntry;
 }
 
+const style = { border: "solid", padding: ".125rem", margin: ".125rem" };
+
 const HealthCheck = (props: HealthCheckEntryProps) => {
     const { entry } = props;
     
     return (
-        <div key={entry.id} style={{ border: "solid", margin: ".125rem" }}>
+        <div key={entry.id} style={style}>
             <span>{entry.date} <MedicalInformationIcon /></span>
             <div>{entry.description}</div>
             <DiagnosisList codes={entry.diagnosisCodes} />

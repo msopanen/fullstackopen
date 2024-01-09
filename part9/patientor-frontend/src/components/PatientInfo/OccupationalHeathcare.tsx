@@ -7,11 +7,13 @@ interface OccupationalHeathcareProps {
     entry: OccupationalHealthcareEntry;
 }
 
+const style = { border: "solid", padding: ".125rem", margin: ".125rem" };
+
 const OccupationalHeathcare = (props: OccupationalHeathcareProps) => {
     const { entry } = props;
     
     return (
-        <div key={entry.id} style={{ border: "solid", margin: ".125rem" }}>
+        <div key={entry.id} style={style}>
             <span>{entry.date} <MedicationIcon /></span>
             <div>{entry.description}</div>
             <DiagnosisList codes={entry.diagnosisCodes} />

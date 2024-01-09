@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 import Stack from '@mui/material/Stack';
 
-import { Patient } from "../../types";
+import { EntryFromValues, Patient } from "../../types";
 
 import patientService from "../../services/patients";
 import GenderIcon from "./GenderIcon";
 import EntryDetails from "./EntryDetails";
+import AddHealthCheckEntry from "./AddHealthCheckEntryForm";
 
 const PatientInfo = () => {
     
@@ -26,7 +27,13 @@ const PatientInfo = () => {
         }
     }, [id]);
 
-    return (<>{patient && (
+    const handleSubmit = async (object: EntryFromValues) => {
+        const id = patient?.id || "";
+        const updatedPatient = await patientService.createEntry(id, object);
+        setPatient(updatedPatient);
+    };
+
+    return (<>{patient && id && (
         <div>
             <Stack direction="row" alignItems="center" gap={1}>
                 <Typography variant="h5">
@@ -36,6 +43,9 @@ const PatientInfo = () => {
             </Stack>
             <div>ssn: {patient.ssn}</div>
             <div>occupation: {patient.occupation}</div>
+
+            <AddHealthCheckEntry onSubmit={handleSubmit} />
+
             <Typography variant="h6" component="div" sx={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
                     entries
             </Typography>
