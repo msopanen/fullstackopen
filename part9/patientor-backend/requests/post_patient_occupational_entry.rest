@@ -1,0 +1,15 @@
+POST http://localhost:3000/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "type": "OccupationalHealthcare",
+    "date": "123",
+    "description": "foo",
+    "specialist": "Aimo",
+    "employerName": "Supo",
+    "diagnosisCodes": ["5X"],
+    "sickLeave": {
+        "startDate": "01-01-2024",
+        "endDate": "01-01-2050"
+    }
+}
