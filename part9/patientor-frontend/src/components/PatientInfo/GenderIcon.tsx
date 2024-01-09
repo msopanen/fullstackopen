@@ -17,7 +17,7 @@ const GenderIcon = (props: GenderIconProps) => {
         case "other":
             return <TransgenderIcon />;
         default:
-            return null;    
+            throw new Error("unrecognized gender");    
     }
 }; 
 
