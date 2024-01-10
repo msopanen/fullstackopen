@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, TextField, Typography, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import { HealthCheckRating, EntryFromValues } from "../../types";
+import { HealthCheckRating, EntryFromValues, healthCheckRatingToValue } from "../../types";
 
 import diagnosisService from "../../services/diagnosis";
 
@@ -39,7 +39,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
                 
-        const createEntryObj = (type: "Hospital" | 
+        const createEntryRequest = (type: "Hospital" | 
           "HealthCheck" | "OccupationalHealthcare"): EntryFromValues => {
           
           const addDiagnosisCodes = diagnosisCodes.length > 0;
@@ -59,7 +59,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             case "HealthCheck": {
               return {
                 type: "HealthCheck",
-                healthCheckRating: HealthCheckRating[rating as keyof typeof HealthCheckRating],
+                healthCheckRating: healthCheckRatingToValue(rating),
                 ...baseEntry,
               };
             }
@@ -87,8 +87,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
           }
         };
 
-        const object = createEntryObj(type);
-
+        const object = createEntryRequest(type);
         props.onSubmit(object);
         resetForm();
     };
