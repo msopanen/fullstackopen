@@ -1,7 +1,9 @@
-import { Button, ButtonGroup, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { Button, ButtonGroup, TextField, Typography, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { useEffect, useState } from "react";
 
 import { HealthCheckRating, EntryFromValues } from "../../types";
+
+import diagnosisService from "../../services/diagnosis";
 
 const style = { border: "solid", padding: ".5rem", margin: ".125rem" };
 const txtFieldStyle = { marginTop: "1rem"};
@@ -18,11 +20,21 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
     const [dischargeDate, setDischargeDate] = useState("");
     const [dischargeCriteria, setDischargeCriteria] = useState("");
     const [specialist, setSpecialist] = useState("");
-    const [diagnosisCodes, setDiagnosisCodes] = useState("");
+    const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
     const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
     const [employerName, setEmployerName] = useState("");
     const [sickLeaveStartDate, setSickLeaveStartDate] = useState("");
     const [sickLeaveEndDate, setSickLeaveEndDate] = useState("");
+
+    const [allDiagnosisCodes, setAllDiagnosisCodes] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchAllDiagnosisCodes = async () => {
+            const allCodes = await diagnosisService.getAll();
+            setAllDiagnosisCodes(allCodes.map(r => r.code));
+        };
+        fetchAllDiagnosisCodes();
+    }, []);
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -38,7 +50,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             date,
             specialist,
             ...(addDiagnosisCodes && { 
-              diagnosisCodes: diagnosisCodes.split(",")
+              diagnosisCodes: diagnosisCodes
             } )
           };
 
@@ -85,7 +97,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
       setDescription("");
       setDate("");
       setSpecialist("");
-      setDiagnosisCodes("");
+      setDiagnosisCodes([]);
       setDischargeDate("");
       setDischargeCriteria("");
       setHealthCheckRating(HealthCheckRating.Healthy);
@@ -98,6 +110,8 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
       e.preventDefault();
       resetForm();
     };
+
+    console.log({ diagnosisCodes });
 
     return <div style={style}>
         <Typography variant="h6" sx={{ margin: ".5rem"}}>
@@ -133,14 +147,27 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             value={specialist}
             onChange={({ target }) => setSpecialist(target.value)}
             sx={txtFieldStyle}
-          />    
-          <TextField
-            label="Diagnose codes"
-            fullWidth 
-            value={diagnosisCodes}
-            onChange={({ target }) => setDiagnosisCodes(target.value)}
-            sx={txtFieldStyle}
           />
+          <FormControl variant="outlined" sx={{ ...txtFieldStyle, minWidth: 200, maxWidth: "100%" }}>
+          <InputLabel htmlFor="diagnosis-codes-select">Diagnosis</InputLabel>
+          <Select
+            variant="outlined"
+            id="diagnosis-codes-select"
+            multiple
+            label="Diagnosis"
+            value={diagnosisCodes}
+            onChange={({ target }) => setDiagnosisCodes(target.value as string[])}
+        >
+          {allDiagnosisCodes.map((code) => (
+            <MenuItem
+              key={code}
+              value={code}
+            >
+              {code}
+            </MenuItem>
+          ))}
+          </Select>
+          </FormControl>
           {type === "HealthCheck" && <TextField
             label="Healthcheck rating"
             fullWidth 
