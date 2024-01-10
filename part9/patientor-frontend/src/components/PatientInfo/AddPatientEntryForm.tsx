@@ -21,7 +21,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
     const [dischargeCriteria, setDischargeCriteria] = useState("");
     const [specialist, setSpecialist] = useState("");
     const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
-    const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
+    const [rating, setHealthCheckRating] = useState<string>(HealthCheckRating[0]);
     const [employerName, setEmployerName] = useState("");
     const [sickLeaveStartDate, setSickLeaveStartDate] = useState("");
     const [sickLeaveEndDate, setSickLeaveEndDate] = useState("");
@@ -39,7 +39,8 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
                 
-        const createEntryObj = (type: "Hospital" | "HealthCheck" | "OccupationalHealthcare"): EntryFromValues => {
+        const createEntryObj = (type: "Hospital" | 
+          "HealthCheck" | "OccupationalHealthcare"): EntryFromValues => {
           
           const addDiagnosisCodes = diagnosisCodes.length > 0;
           const addSickLeave = sickLeaveStartDate.length > 0 
@@ -58,7 +59,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             case "HealthCheck": {
               return {
                 type: "HealthCheck",
-                healthCheckRating,
+                healthCheckRating: HealthCheckRating[rating as keyof typeof HealthCheckRating],
                 ...baseEntry,
               };
             }
@@ -100,7 +101,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
       setDiagnosisCodes([]);
       setDischargeDate("");
       setDischargeCriteria("");
-      setHealthCheckRating(HealthCheckRating.Healthy);
+      setHealthCheckRating(HealthCheckRating[0]);
       setEmployerName("");
       setSickLeaveStartDate("");
       setSickLeaveEndDate("");
@@ -111,7 +112,8 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
       resetForm();
     };
 
-    console.log({ diagnosisCodes });
+    //const x = Object.keys(HealthCheckRating).filter(e => !isNaN(Number(e)));
+    //console.log({ x });
 
     return <div style={style}>
         <Typography variant="h6" sx={{ margin: ".5rem"}}>
@@ -149,32 +151,46 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             sx={txtFieldStyle}
           />
           <FormControl variant="outlined" sx={{ ...txtFieldStyle, minWidth: 200, maxWidth: "100%" }}>
-          <InputLabel htmlFor="diagnosis-codes-select">Diagnosis</InputLabel>
-          <Select
-            variant="outlined"
-            id="diagnosis-codes-select"
-            multiple
-            label="Diagnosis"
-            value={diagnosisCodes}
-            onChange={({ target }) => setDiagnosisCodes(target.value as string[])}
-        >
-          {allDiagnosisCodes.map((code) => (
-            <MenuItem
-              key={code}
-              value={code}
-            >
-              {code}
-            </MenuItem>
-          ))}
-          </Select>
+            <InputLabel htmlFor="diagnosis-codes-select">Diagnosis</InputLabel>
+            <Select
+              variant="outlined"
+              id="diagnosis-codes-select"
+              multiple
+              label="Diagnosis"
+              value={diagnosisCodes}
+              onChange={({ target }) => setDiagnosisCodes(target.value as string[])}
+          >
+            {allDiagnosisCodes.map((code) => (
+              <MenuItem
+                key={code}
+                value={code}
+              >
+                {code}
+              </MenuItem>
+            ))}
+            </Select>
           </FormControl>
-          {type === "HealthCheck" && <TextField
-            label="Healthcheck rating"
-            fullWidth 
-            value={healthCheckRating}
-            onChange={({ target }) => setHealthCheckRating(Number(target.value))}
-            sx={txtFieldStyle}
-          /> } 
+          {type === "HealthCheck" && (<div>
+            <FormControl variant="outlined" sx={{ ...txtFieldStyle, minWidth: 200, maxWidth: "100%" }}>
+              <InputLabel htmlFor="health-check-rating-select">Health check rating</InputLabel>
+              <Select
+                variant="outlined"
+                id="health-check-rating-select"
+                label="Health check rating"
+                value={rating}
+                onChange={({ target }) => setHealthCheckRating(target.value)}
+              >
+              {Object.keys(HealthCheckRating).filter(e => isNaN(Number(e))).map((code) => (
+                <MenuItem
+                  key={code}
+                  value={code}
+                >
+                  {code}
+                </MenuItem>
+              ))}
+              </Select>
+            </FormControl>
+          </div>)} 
           {type === "Hospital" && (
             <>
               <TextField
