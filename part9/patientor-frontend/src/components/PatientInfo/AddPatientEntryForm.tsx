@@ -119,9 +119,11 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             sx={txtFieldStyle}
           />
           <TextField
+            fullWidth
             label="Date"
-            fullWidth 
+            InputLabelProps={{ shrink: true }} 
             value={date}
+            type="date"
             onChange={({ target }) => setDate(target.value)}
             sx={txtFieldStyle}
           /> 
@@ -150,6 +152,8 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             <>
               <TextField
                 label="Discharge date"
+                InputLabelProps={{ shrink: true }}
+                type="date"
                 fullWidth 
                 value={dischargeDate}
                 onChange={({ target }) => setDischargeDate(target.value)}
@@ -175,6 +179,8 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
               />
               <TextField
                 label="Sick leave start date"
+                InputLabelProps={{ shrink: true }}
+                type="date"
                 fullWidth 
                 value={sickLeaveStartDate}
                 onChange={({ target }) => setSickLeaveStartDate(target.value)}
@@ -182,6 +188,8 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
               />
               <TextField
                 label="Sick leave end date"
+                InputLabelProps={{ shrink: true }}
+                type="date"
                 fullWidth 
                 value={sickLeaveEndDate}
                 onChange={({ target }) => setSickLeaveEndDate(target.value)}
