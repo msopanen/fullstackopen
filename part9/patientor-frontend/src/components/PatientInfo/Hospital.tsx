@@ -16,6 +16,8 @@ const Hospital = (props: HospitalEntryProps) => {
         <div key={entry.id} style={style}>
             <span>{entry.date} <LocalHospitalIcon /></span>
             <div>{entry.description}</div>
+            
+            <div>discharge date {entry.discharge.date} dischage criteria {entry.discharge.criteria}</div>
             <DiagnosisList codes={entry.diagnosisCodes} />
             <div>diagnose by {entry.specialist}</div>
         </div>

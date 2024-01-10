@@ -8,7 +8,7 @@ import { EntryFromValues, Patient } from "../../types";
 import patientService from "../../services/patients";
 import GenderIcon from "./GenderIcon";
 import EntryDetails from "./EntryDetails";
-import AddHealthCheckEntry from "./AddHealthCheckEntryForm";
+import AddPatientEntryForm from "./AddPatientEntryForm";
 
 const PatientInfo = () => {
     
@@ -64,7 +64,7 @@ const PatientInfo = () => {
             <div>occupation: {patient.occupation}</div>
             {error && <Alert severity="error">{error}</Alert>}
 
-            <AddHealthCheckEntry onSubmit={handleSubmit} />
+            <AddPatientEntryForm onSubmit={handleSubmit} />
 
             <Typography variant="h6" component="div" sx={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
                     entries

@@ -16,6 +16,9 @@ const OccupationalHeathcare = (props: OccupationalHeathcareProps) => {
         <div key={entry.id} style={style}>
             <span>{entry.date} <MedicationIcon /></span>
             <div>{entry.description}</div>
+            <div>{}</div>
+            {entry.sickLeave && 
+                <div>sick leave period {entry.sickLeave.startDate} - {entry.sickLeave.endDate}</div>}
             <DiagnosisList codes={entry.diagnosisCodes} />
             <div>diagnose by {entry.specialist}</div>
         </div>
