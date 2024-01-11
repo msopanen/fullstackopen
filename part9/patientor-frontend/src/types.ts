@@ -25,7 +25,7 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3,
 }
 
-export const healthCheckRatingToValue = (rating: string) => 
+export const toHealthCheckRatingValue = (rating: string) => 
   HealthCheckRating[rating as keyof typeof HealthCheckRating];
 
 export interface HealthCheckEntry extends BaseEntry {

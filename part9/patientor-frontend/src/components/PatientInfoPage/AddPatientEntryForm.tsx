@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, TextField, Typography, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import { HealthCheckRating, EntryFromValues, healthCheckRatingToValue } from "../../types";
+import { HealthCheckRating, EntryFromValues, toHealthCheckRatingValue } from "../../types";
 
 import diagnosisService from "../../services/diagnosis";
 
@@ -59,7 +59,7 @@ const AddPatientEntryForm = (props: AddPatientEntryFormProps) => {
             case "HealthCheck": {
               return {
                 type: "HealthCheck",
-                healthCheckRating: healthCheckRatingToValue(rating),
+                healthCheckRating: toHealthCheckRatingValue(rating),
                 ...baseEntry,
               };
             }

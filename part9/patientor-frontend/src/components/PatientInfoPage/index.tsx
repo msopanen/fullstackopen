@@ -10,7 +10,7 @@ import GenderIcon from "./GenderIcon";
 import EntryDetails from "./EntryDetails";
 import AddPatientEntryForm from "./AddPatientEntryForm";
 
-const PatientInfo = () => {
+const PatientInfoPage = () => {
     
     const [patient, setPatient] = useState<Patient>();
     const [error, setError] = useState<string>();
@@ -76,4 +76,4 @@ const PatientInfo = () => {
     )}</>);
 };
 
-export default PatientInfo;
+export default PatientInfoPage;
